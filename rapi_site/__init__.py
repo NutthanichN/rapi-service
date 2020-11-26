@@ -24,10 +24,10 @@ def create_app(test_config=None) -> Flask:
     except OSError:
         pass
 
-    from . import db, map
-    db.init_app(app)
+    from . import db, r_map
+    # db.init_app(app)
 
-    app.register_blueprint(map.bp)
+    app.register_blueprint(r_map.bp)
 
     app.add_url_rule('/', endpoint='index')
 
