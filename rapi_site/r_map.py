@@ -3,7 +3,7 @@ from flask import (
 )
 from werkzeug.exceptions import abort
 
-from rapi_site.db import get_db
+from rapi_site.database import db_session
 
 bp = Blueprint('r_map', __name__)
 

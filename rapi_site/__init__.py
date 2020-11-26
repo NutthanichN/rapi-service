@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from rapi_site.database import db_session
 
 
 def create_app(test_config=None) -> Flask:
@@ -24,9 +25,8 @@ def create_app(test_config=None) -> Flask:
     except OSError:
         pass
 
-    from . import db, r_map
-    # db.init_app(app)
-
+    from . import database, r_map
+    database.init_app(app)
     app.register_blueprint(r_map.bp)
 
     app.add_url_rule('/', endpoint='index')
