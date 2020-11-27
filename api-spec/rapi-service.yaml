@@ -1,0 +1,195 @@
+openapi: 3.0.0
+info:
+  title: Restaurant API Service
+  description:
+    This Restaurant API service provides information about restaurants in Bangkok. This information includes basic information of restaurants and received ratings from Michelin Guide, wongnai.com and tripadvisor.com.
+  version: 1.0.0
+servers:
+- url: /restaurant-api/
+paths:
+  /restaurants/:
+    get:
+      summary: Returns an array of restaurant object.
+      operationId: controller.get_restaurant
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+  /restaurants/{restaurantId}:
+    parameters:
+    - name: restaurantId
+      in: path
+      required: true
+      schema:
+        type : integer
+    get:
+      summary: Returns complete details of the specified restaurant.
+      operationId: controller.get_restaurant_details
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+  /restaurants/michelin:
+    get:
+      summary: Returns a restaurant which receives Michelin Star.
+      operationId: controller.get_michelin_restaurant
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+  /restaurants/rating/wongnai/{restaurantId}:
+    parameters:
+    - name: restaurantId
+      in: path
+      required: true
+      schema:
+        type : integer
+    get:
+      summary: Returns rating of the specified restaurant from Wongnai.
+      operationId: controller.get_restaurant_wongnai_rating
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+  /restaurants/rating/tripadvisor/{restaurantId}:
+    parameters:
+    - name: restaurantId
+      in: path
+      required: true
+      schema:
+        type : integer
+    get:
+      summary: Returns rating of the specified restaurant from Tripadvisor.
+      operationId: controller.get_restaurant_tripadvisor_rating
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+  /districts/:
+    get:
+      summary: Returns an array of district object.
+      operationId: controller.get_district
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/District'
+  /districts/{districtId}/restaurants/:
+    parameters:
+    - name: districtId
+      in: path
+      required: true
+      schema:
+        type : integer
+    get:
+      summary: Returns all restaurants with the specified district.
+      operationId: controller.get_restaurant_by_district
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/District'
+  /cuisines/:
+    get:
+      summary: Returns an array of cuisine object.
+      operationId: controller.get_cuisine
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cuisine'
+  /cuisines/{cuisineId}:
+    parameters:
+    - name: cuisineId
+      in: path
+      required: true
+      schema:
+        type : integer
+    get:
+      summary: Returns the specified cuisine.
+      operationId: controller.get_specified_cuisine
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cuisine'
+  /cuisines/{cuisineId}/restaurants/:
+    parameters:
+    - name: cuisineId
+      in: path
+      required: true
+      schema:
+        type : integer
+    get:
+      summary: Returns the array of restaurants with the specified cuisine.
+      operationId: controller.get_specified_cuisine_restaurant
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cuisine'
+components:
+  schemas:
+    Restaurant:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        location:
+          type: array
+          items:
+            type: number
+            multipleOf: 0.000001
+        cuisine_name:
+          type: string
+        opening_hour:
+          type: string
+        wongnai_rating:
+          type: number
+          multipleOf: 0.1
+        tripadvisor_rating:
+          type: number
+          multipleOf: 0.1
+        address:
+          type: string
+    District:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+    Cuisine:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
