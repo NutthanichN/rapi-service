@@ -3,6 +3,8 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+<script src="https://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.js"></script>
+<link href="https://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.css" rel="stylesheet"/>
 <link href='https://fonts.googleapis.com/css?family=Nunito' rel='stylesheet'>
 
 <style>
@@ -31,6 +33,30 @@ body {
   background-color: #e6ffe6;
   width: 200px;
   height: 200px;
+  padding: 30px;
+  line-height: 30pt;
+}
+
+.t1{
+  background-color: #e6ffe6;
+  position: absolute;
+  font-size: 19px;
+  left: 1210px;
+  top: 380px;
+  width: 220px;
+  height: 100px;
+  padding: 30px;
+  line-height: 30pt;
+}
+
+.t2{
+  background-color: #e6ffe6;
+  position: absolute;
+  font-size: 19px;
+  left: 1210px;
+  top: 500px;
+  width: 220px;
+  height: 100px;
   padding: 30px;
   line-height: 30pt;
 }
@@ -282,6 +308,16 @@ input[type=button], input[type=submit], input[type=reset] {
   </div>
 </div>
 
+<div>
+  <input type="text" class="t1" id="time1" placeholder="Start Time">
+</div>
+
+<div>
+  <input type="text" class="t2" id="time2" placeholder="Close Time">
+</div>
+
+
+
 <form action="/action_page.php" class="form-checkbox">
   <input type="checkbox" id="wongnai" name="wongnai" value="Wongnai">
   <label for="wongnai"> Wongnai </label><br>
@@ -292,37 +328,30 @@ input[type=button], input[type=submit], input[type=reset] {
   <input type="submit" value="Submit">
 </form>
 
-<section class="range-slider range-container range-slider-duration" >
-  <span class="output outputOne"></span>
-  <span class="output outputTwo"></span>
-  <span class="full-range"></span>
-  <span class="incl-range"></span>
-  <input name="rangeOne" value="100" min="0" max="600" step="0.1" type="range">
-  <input name="rangeTwo" value="500" min="0" max="600" step="0.1" type="range">
-</section>
 
-<canvas id="chart1" class="chart"></canvas>
-<script>
-  var pieData = [
-    {% for item, label, colors in set2 %}
-      {
-        value: {{item}},
-        label: "{{label}}",
-        color : "{{colors}}"
-      },
+<!--For pie chart-->
+<!--<canvas id="chart1" class="chart"></canvas>-->
+<!--<script>-->
+<!--  var pieData = [-->
+<!--    {% for item, label, colors in set2 %}-->
+<!--      {-->
+<!--        value: {{item}},-->
+<!--        label: "{{label}}",-->
+<!--        color : "{{colors}}"-->
+<!--      },-->
 
-    {% endfor %}
-  ];
+<!--    {% endfor %}-->
+<!--  ];-->
 
-  // get bar chart canvas
-  var mychart = document.getElementById("chart1").getContext("2d");
-  steps = 10
-  max = {{ max }}
+<!--  // get bar chart canvas-->
+<!--  var mychart = document.getElementById("chart1").getContext("2d");-->
+<!--  steps = 10-->
+<!--  max = {{ max }}-->
 
-  // draw pie chart
-  new Chart(document.getElementById("chart1").getContext("2d")).Pie(pieData);
+<!--  // draw pie chart-->
+<!--  new Chart(document.getElementById("chart1").getContext("2d")).Pie(pieData);-->
 
-</script>
+<!--</script>-->
 
 <!--For wongnai chart-->
 <!--<canvas id="chart3" class="chart"></canvas>-->
@@ -453,50 +482,30 @@ function filterFunction() {
 }
 </script>
 
- <script>
-    function secondsTimeSpanToHMS(s) {
-    var h = Math.floor(s/3600); //Get whole hours
-    s -= h*3600;
-    var m = Math.floor(s/60); //Get remaining minutes
-    s -= m*60;
-    return (m < 10 ? '0'+m : m)+":"+ Math.floor((s < 10 ? '0'+s : s)); //zero padding on minutes and seconds
-}
 
+<script>
+var times = {}; // Added to initialize an object
 
-var rangeOne = document.querySelector('.range-slider input[name="rangeOne"]'),
-    rangeTwo = document.querySelector('.range-slider input[name="rangeTwo"]'),
-    outputOne = document.querySelector('.range-slider .outputOne'),
-    outputTwo = document.querySelector('.range-slider .outputTwo'),
-    inclRange = document.querySelector('.range-slider .incl-range'),
-    updateView = function () {
-      if (this.getAttribute('name') === 'rangeOne') {
-        outputOne.innerHTML = secondsTimeSpanToHMS(this.value);
-        outputOne.style.left = this.value / this.getAttribute('max') * 100 + '%';
-      } else {
-        outputTwo.style.left = this.value / this.getAttribute('max') * 100 + '%';
-        outputTwo.innerHTML = secondsTimeSpanToHMS(this.value);
-      }
+var timepicker = new TimePicker(['time1', 'time2'], {
+  theme: 'dark',
+  lang: 'en'
+});
 
-      if (parseInt(rangeOne.value) > parseInt(rangeTwo.value)) {
-        inclRange.style.width = (rangeOne.value - rangeTwo.value) / this.getAttribute('max') * 100 + '%';
-        inclRange.style.left = rangeTwo.value / this.getAttribute('max') * 100 + '%';
-      } else {
-        inclRange.style.width = (rangeTwo.value - rangeOne.value) / this.getAttribute('max') * 100 + '%';
-        inclRange.style.left = rangeOne.value / this.getAttribute('max') * 100 + '%';
-      }
-    };
+timepicker.on('change', function(evt){
+  var value = (evt.hour || '00') + ':' + (evt.minute || '00');
+  evt.element.value = value;
 
-  document.addEventListener('DOMContentLoaded', function () {
-    updateView.call(rangeOne);
-    updateView.call(rangeTwo);
-    $('input[type="range"]').on('mouseup', function() {
-      this.blur();
-    }).on('mousedown input', function () {
-      updateView.call(this);
-    });
-  });
-
+  //Added the below to store in the object and consoling:
+  var id = evt.element.id;
+  times[id] = value;
+  console.clear();
+  console.log(times); 
+});
 </script>
+
+
+
+
 </body>
 </html>
 
