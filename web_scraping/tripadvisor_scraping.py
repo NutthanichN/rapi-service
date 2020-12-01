@@ -47,11 +47,11 @@ def get_restaurant_links_from_all_pages(driver: webdriver, start_url: str):
             page_num += 1
             url = driver.find_element_by_link_text('Next').get_attribute('href')
             if page_num >= 80:
-                sleep(20)
+                sleep(30)
             elif page_num >= 40:
                 sleep(15)
             else:
-                sleep(8)
+                sleep(10)
         except AttributeError:
             print(r_links)
             print(f"Stopped at {datetime.now().strftime('%H:%M:%S')}")
@@ -62,20 +62,8 @@ def get_restaurant_links_from_all_pages(driver: webdriver, start_url: str):
 
 if __name__ == '__main__':
     driver = webdriver.Chrome(f"{THIS_DIR}/chromedriver.exe")
-    get_restaurant_links_from_all_pages(driver, "https://www.tripadvisor.com/Restaurants-g293916-Bangkok.html")
+    BASE_URL = "https://www.tripadvisor.com/Restaurants-g293916-Bangkok.html"
 
-    # soup = get_soup_using_selenium("https://www.tripadvisor.com/Restaurants-g293916-Bangkok.html",
-    #                                driver, 15)
-    #
-    # divs = soup.find('div', attrs={'data-test-target': 'restaurants-list'})
-    # a_tags = divs.find_all('a', class_='_2uEVo25r _3tdrXOp7', target='_blank', href=True)
-    #
-    # restaurant_list = []
-    # for a in a_tags:
-    #     link = DOMAIN_URL + a['href']
-    #     restaurant_list.append(link)
-    # write_restaurant_link_to_file(restaurant_list, THIS_DIR / 'data/tripadvisor/restaurant_links_t_2.txt')
-    # a_next = driver.find_element_by_link_text('Next').get_attribute('href')
-    # print(a_next.get_attribute('href'))
+    get_restaurant_links_from_all_pages(driver, BASE_URL)
 
     # driver.close()
