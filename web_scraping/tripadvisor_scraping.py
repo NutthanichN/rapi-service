@@ -103,8 +103,11 @@ def get_restaurant_details_from_a_page(driver: webdriver, r_url: str) -> dict:
     cuisine_str = ''
     try:
         # 'https://www.tripadvisor.com/Restaurant_Review-g293916-d15776288-Reviews-1826_Mixology_Rooftop_Bar-Bangkok.html'
-        div_detail = soup.find('div', class_='_3UjHBXYa').find('div', class_='_1XLfiSsv')
-        cuisine_str = div_detail.string
+        div_details = soup.find('div', class_='_3UjHBXYa').find_all('div', class_='_1XLfiSsv')
+        if 'THB' in str(div_details[0]):
+            cuisine_str = div_details[1].string
+        else:
+            cuisine_str = div_details[0].string
     except AttributeError:
         # 'https://www.tripadvisor.com/Restaurant_Review-g293916-d3715466-Reviews-Calderazzo_On_31-Bangkok.html'
         div_detail = soup.find('div', attrs={'data-tab': 'TABS_DETAILS'})
@@ -126,7 +129,8 @@ def get_restaurant_details_from_a_page(driver: webdriver, r_url: str) -> dict:
 def dump_restaurant_details_from_all_pages(driver: webdriver, db_session, r_urls: list):
     # r_urls = [
     #     'https://www.tripadvisor.com/Restaurant_Review-g293916-d15776288-Reviews-1826_Mixology_Rooftop_Bar-Bangkok.html',
-    #     'https://www.tripadvisor.com/Restaurant_Review-g293916-d3715466-Reviews-Calderazzo_On_31-Bangkok.html'
+    #     'https://www.tripadvisor.com/Restaurant_Review-g293916-d3715466-Reviews-Calderazzo_On_31-Bangkok.html',
+    #     'https://www.tripadvisor.com/Restaurant_Review-g293916-d2087255-Reviews-BarSu-Bangkok.html'
     # ]
     print(f"Started at {datetime.now().strftime('%H:%M:%S')}")
     for i in range(len(r_urls)):
@@ -169,13 +173,14 @@ if __name__ == '__main__':
     BASE_URL = "https://www.tripadvisor.com/Restaurants-g293916-Bangkok.html"
     # get_restaurant_links_from_all_pages(driver, BASE_URL)
 
-    engine = create_engine(f"sqlite:///{ROOT_DIR / 'web_scraping/data/tripadvisor/test_restaurants_t.sqlite3'}")
+    engine = create_engine(f"sqlite:///{ROOT_DIR / 'web_scraping/data/tripadvisor/restaurants_t.sqlite3'}")
     Session = sessionmaker(bind=engine)
     session = Session()
     # create_table(engine)
 
-    r_urls = read_restaurant_links(THIS_DIR / 'data/tripadvisor/restaurant_links_t_p1-194.txt', 1, 10)
+    r_urls = read_restaurant_links(THIS_DIR / 'data/tripadvisor/restaurant_links_t_p1-194.txt', 1, 100)
     dump_restaurant_details_from_all_pages(driver, session, r_urls)
 
+    # r_url = 'https://www.tripadvisor.com/Restaurant_Review-g293916-d2087255-Reviews-BarSu-Bangkok.html'
     # print(get_restaurant_details_from_a_page(driver, r_url))
     # driver.close()
