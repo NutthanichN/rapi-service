@@ -93,13 +93,18 @@ def get_restaurant_details_from_a_page(driver: webdriver, r_url: str) -> dict:
     r_name = soup.find('h1', attrs={'data-test-target': 'top-info-header'})
     restaurant['name'] = r_name.string
 
-    div_rating_review = soup.find('div', class_='Ct2OcWS4')
-    rating_str = div_rating_review.find('span', class_='r2Cf69qf').text
-    restaurant['rating'] = get_ratings(rating_str)
+    try:
+        div_rating_review = soup.find('div', class_='Ct2OcWS4')
+        rating_str = div_rating_review.find('span', class_='r2Cf69qf').text
+        restaurant['rating'] = get_ratings(rating_str)
 
-    num_review_str = div_rating_review.find('a', class_='_10Iv7dOs').string
-    restaurant['num_reviews'] = get_number_of_reviews(num_review_str)
-
+        num_review_str = div_rating_review.find('a', class_='_10Iv7dOs').string
+        restaurant['num_reviews'] = get_number_of_reviews(num_review_str)
+    except AttributeError:
+        # no ratings and reviews
+        restaurant['rating'] = -1
+        restaurant['num_reviews'] = -1
+        
     cuisine_str = ''
     try:
         # 'https://www.tripadvisor.com/Restaurant_Review-g293916-d15776288-Reviews-1826_Mixology_Rooftop_Bar-Bangkok.html'
