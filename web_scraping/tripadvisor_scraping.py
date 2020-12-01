@@ -5,10 +5,18 @@ from dirs import ROOT_DIR
 from time import sleep
 from datetime import datetime
 from web_scraping.wongnai_scraping import write_restaurant_link_to_file
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+from web_scraping.db_models import Base, RestaurantT
 
 
 DOMAIN_URL = 'https://www.tripadvisor.com'
 THIS_DIR = ROOT_DIR / 'web_scraping/'
+
+
+def create_table(engine):
+    Base.metadata.create_all(engine)
 
 
 def get_soup_using_selenium(url: str, driver: webdriver, timeout) -> BeautifulSoup:
@@ -34,7 +42,7 @@ def get_restaurant_links_from_a_page(soup: BeautifulSoup) -> list:
 
 
 def get_restaurant_links_from_all_pages(driver: webdriver, start_url: str):
-    print(f"Start at {datetime.now().strftime('%H:%M:%S')}")
+    print(f"Started at {datetime.now().strftime('%H:%M:%S')}")
     r_links = []
     url = start_url
     page_num = 1
@@ -60,10 +68,114 @@ def get_restaurant_links_from_all_pages(driver: webdriver, start_url: str):
     return r_links
 
 
+def get_number_of_reviews(num_review: str) -> int:
+    """
+    >>> get_number_of_reviews('172 reviews')
+    172
+    >>> get_number_of_reviews('1,822 reviews')
+    1822
+    """
+    num_str = num_review.split(' ')[0]
+    num_str = ''.join([n for n in num_str if n != ','])
+    return int(num_str)
+
+
+def get_ratings(ratings: str) -> float:
+    # 5.0\xa0
+    return float(ratings.split("\\")[0])
+
+
+def get_restaurant_details_from_a_page(driver: webdriver, r_url: str) -> dict:
+    restaurant = {}
+    soup = get_soup_using_selenium(r_url, driver, 15)
+
+    # get restaurant's name
+    r_name = soup.find('h1', attrs={'data-test-target': 'top-info-header'})
+    restaurant['name'] = r_name.string
+
+    div_rating_review = soup.find('div', class_='Ct2OcWS4')
+    rating_str = div_rating_review.find('span', class_='r2Cf69qf').text
+    restaurant['rating'] = get_ratings(rating_str)
+
+    num_review_str = div_rating_review.find('a', class_='_10Iv7dOs').string
+    restaurant['num_reviews'] = get_number_of_reviews(num_review_str)
+
+    cuisine_str = ''
+    try:
+        # 'https://www.tripadvisor.com/Restaurant_Review-g293916-d15776288-Reviews-1826_Mixology_Rooftop_Bar-Bangkok.html'
+        div_detail = soup.find('div', class_='_3UjHBXYa').find('div', class_='_1XLfiSsv')
+        cuisine_str = div_detail.string
+    except AttributeError:
+        # 'https://www.tripadvisor.com/Restaurant_Review-g293916-d3715466-Reviews-Calderazzo_On_31-Bangkok.html'
+        div_detail = soup.find('div', attrs={'data-tab': 'TABS_DETAILS'})
+        div_cuisines = div_detail.find_all('div', class_='ui_column')
+        for d in div_cuisines:
+            if 'CUISINES' in str(d):
+                cuisine_str = d.find('div', class_='_2170bBgV').string
+                # print(cuisine_str)
+
+    cuisines = ','.join([c.strip() for c in cuisine_str.split(',')])
+    restaurant['cuisines'] = cuisines
+
+    span_address = soup.find('span', class_='_2saB_OSe')
+    restaurant['address'] = span_address.string
+
+    return restaurant
+
+
+def dump_restaurant_details_from_all_pages(driver: webdriver, db_session, r_urls: list):
+    # r_urls = [
+    #     'https://www.tripadvisor.com/Restaurant_Review-g293916-d15776288-Reviews-1826_Mixology_Rooftop_Bar-Bangkok.html',
+    #     'https://www.tripadvisor.com/Restaurant_Review-g293916-d3715466-Reviews-Calderazzo_On_31-Bangkok.html'
+    # ]
+    print(f"Started at {datetime.now().strftime('%H:%M:%S')}")
+    for i in range(len(r_urls)):
+        restaurant = get_restaurant_details_from_a_page(driver, r_urls[i])
+        add_restaurant_to_session(restaurant, db_session)
+        db_session.commit()
+        print(f"Committed {i + 1} restaurant(s)")
+        sleep(20)
+    print(f"Finished at {datetime.now().strftime('%H:%M:%S')}")
+
+
+def add_restaurant_to_session(restaurant: dict, session):
+    r_instance = RestaurantT(
+        name=restaurant['name'],
+        rating=restaurant['rating'],
+        num_reviews=restaurant['num_reviews'],
+        cuisines=restaurant['cuisines'],
+        address=restaurant['address']
+    )
+    session.add(r_instance)
+
+
+def read_restaurant_links(file: str, start=0, stop=None) -> list:
+    links = []
+    with open(file, 'r', encoding='utf8') as f:
+        for i, link in enumerate(f):
+            if stop is None:
+                links.append(link)
+            else:
+                if start <= i + 1 <= stop:
+                    links.append(link)
+    return links
+
+
 if __name__ == '__main__':
+    # import doctest
+    # doctest.testmod(verbose=True)
+
     driver = webdriver.Chrome(f"{THIS_DIR}/chromedriver.exe")
     BASE_URL = "https://www.tripadvisor.com/Restaurants-g293916-Bangkok.html"
+    # get_restaurant_links_from_all_pages(driver, BASE_URL)
 
-    get_restaurant_links_from_all_pages(driver, BASE_URL)
+    engine = create_engine(f"sqlite:///{ROOT_DIR / 'web_scraping/data/tripadvisor/test_restaurants_t.sqlite3'}")
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    # create_table(engine)
 
+    r_urls = read_restaurant_links(THIS_DIR / 'data/tripadvisor/restaurant_links_t_p1-194.txt', 1, 10)
+    dump_restaurant_details_from_all_pages(driver, session, r_urls)
+
+    # print(get_restaurant_details_from_a_page(driver, r_url))
     # driver.close()
