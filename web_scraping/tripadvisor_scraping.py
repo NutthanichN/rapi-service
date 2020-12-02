@@ -114,13 +114,21 @@ def get_restaurant_details_from_a_page(driver: webdriver, r_url: str) -> dict:
         else:
             cuisine_str = div_details[0].string
     except AttributeError:
-        # 'https://www.tripadvisor.com/Restaurant_Review-g293916-d3715466-Reviews-Calderazzo_On_31-Bangkok.html'
-        div_detail = soup.find('div', attrs={'data-tab': 'TABS_DETAILS'})
-        div_cuisines = div_detail.find_all('div', class_='ui_column')
-        for d in div_cuisines:
-            if 'CUISINES' in str(d):
-                cuisine_str = d.find('div', class_='_2170bBgV').string
-                # print(cuisine_str)
+        try:
+            # 'https://www.tripadvisor.com/Restaurant_Review-g293916-d3715466-Reviews-Calderazzo_On_31-Bangkok.html'
+            div_detail = soup.find('div', attrs={'data-tab': 'TABS_DETAILS'})
+            div_cuisines = div_detail.find_all('div', class_='ui_column')
+            for d in div_cuisines:
+                if 'CUISINES' in str(d):
+                    cuisine_str = d.find('div', class_='_2170bBgV').string
+                    # print(cuisine_str)
+        except AttributeError:
+            # div details doesn't show
+            # https://www.tripadvisor.com/Restaurant_Review-g293916-d873174-Reviews-Le_Normandie-Bangkok.html
+            sub_heading = soup.find('span', class_='_13OzAOXO _34GKdBMV')
+            a_cuisines = list(sub_heading)[1:-1]
+            cuisine_str = ','.join([a.string for a in a_cuisines])
+            # print(cuisine_str)
 
     cuisines = ','.join([c.strip() for c in cuisine_str.split(',')])
     restaurant['cuisines'] = cuisines
@@ -135,7 +143,8 @@ def dump_restaurant_details_from_all_pages(driver: webdriver, db_session, r_urls
     # r_urls = [
     #     'https://www.tripadvisor.com/Restaurant_Review-g293916-d15776288-Reviews-1826_Mixology_Rooftop_Bar-Bangkok.html',
     #     'https://www.tripadvisor.com/Restaurant_Review-g293916-d3715466-Reviews-Calderazzo_On_31-Bangkok.html',
-    #     'https://www.tripadvisor.com/Restaurant_Review-g293916-d2087255-Reviews-BarSu-Bangkok.html'
+    #     'https://www.tripadvisor.com/Restaurant_Review-g293916-d2087255-Reviews-BarSu-Bangkok.html',
+    #     'https://www.tripadvisor.com/Restaurant_Review-g293916-d873174-Reviews-Le_Normandie-Bangkok.html'
     # ]
     print(f"Started at {datetime.now().strftime('%H:%M:%S')}")
     for i in range(len(r_urls)):
@@ -186,6 +195,6 @@ if __name__ == '__main__':
     r_urls = read_restaurant_links(THIS_DIR / 'data/tripadvisor/restaurant_links_t_p1-194.txt', 1, 100)
     dump_restaurant_details_from_all_pages(driver, session, r_urls)
 
-    # r_url = 'https://www.tripadvisor.com/Restaurant_Review-g293916-d2087255-Reviews-BarSu-Bangkok.html'
+    # r_url = 'https://www.tripadvisor.com/Restaurant_Review-g293916-d873174-Reviews-Le_Normandie-Bangkok.html'
     # print(get_restaurant_details_from_a_page(driver, r_url))
     # driver.close()
