@@ -1,6 +1,8 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from dirs import ROOT_DIR
 from time import sleep
 from datetime import datetime
@@ -136,6 +138,22 @@ def get_restaurant_details_from_a_page(driver: webdriver, r_url: str) -> dict:
     span_address = soup.find('span', class_='_2saB_OSe')
     restaurant['address'] = span_address.string
 
+    span_opening_hrs = soup.find('span', class_='_1h0LGVD2').find_all('span')
+    for s in span_opening_hrs:
+        if 18 <= len(s.text) < 20:
+            opening_hrs_str = s.text.replace(u'\xa0', u' ')
+            restaurant['opening_hour'] = opening_hrs_str
+
+    try:
+        hr = restaurant['opening_hour']
+    except KeyError:
+        see_all_hours = driver.find_element_by_class_name('ct1ZIzQ6')
+        see_all_hours.click()
+        sun_hrs = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CLASS_NAME, '_2W4n9Mwo'))
+        )
+        restaurant['opening_hour'] = sun_hrs.text
+
     return restaurant
 
 
@@ -152,7 +170,7 @@ def dump_restaurant_details_from_all_pages(driver: webdriver, db_session, r_urls
         add_restaurant_to_session(restaurant, db_session)
         db_session.commit()
         print(f"Committed {i + 1} restaurant(s)")
-        sleep(20)
+        sleep(15)
     print(f"Finished at {datetime.now().strftime('%H:%M:%S')}")
 
 
@@ -162,7 +180,8 @@ def add_restaurant_to_session(restaurant: dict, session):
         rating=restaurant['rating'],
         num_reviews=restaurant['num_reviews'],
         cuisines=restaurant['cuisines'],
-        address=restaurant['address']
+        address=restaurant['address'],
+        opening_hour=restaurant['opening_hour']
     )
     session.add(r_instance)
 
@@ -184,17 +203,17 @@ if __name__ == '__main__':
     # doctest.testmod(verbose=True)
 
     driver = webdriver.Chrome(f"{THIS_DIR}/chromedriver.exe")
-    BASE_URL = "https://www.tripadvisor.com/Restaurants-g293916-Bangkok.html"
+    # BASE_URL = "https://www.tripadvisor.com/Restaurants-g293916-Bangkok.html"
     # get_restaurant_links_from_all_pages(driver, BASE_URL)
 
-    engine = create_engine(f"sqlite:///{ROOT_DIR / 'web_scraping/data/tripadvisor/restaurants_t.sqlite3'}")
+    engine = create_engine(f"sqlite:///{ROOT_DIR / 'web_scraping/data/tripadvisor/restaurants_t2.sqlite3'}")
     Session = sessionmaker(bind=engine)
     session = Session()
     # create_table(engine)
 
-    r_urls = read_restaurant_links(THIS_DIR / 'data/tripadvisor/restaurant_links_t_p1-194.txt', 1, 100)
+    r_urls = read_restaurant_links(THIS_DIR / 'data/tripadvisor/restaurant_links_t_p1-194.txt', 1, 5)
     dump_restaurant_details_from_all_pages(driver, session, r_urls)
 
-    # r_url = 'https://www.tripadvisor.com/Restaurant_Review-g293916-d873174-Reviews-Le_Normandie-Bangkok.html'
+    # r_url = 'https://www.tripadvisor.com/Restaurant_Review-g293916-d18919695-Reviews-Chez_Shibata365-Bangkok.html'
     # print(get_restaurant_details_from_a_page(driver, r_url))
     # driver.close()

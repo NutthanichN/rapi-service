@@ -13,6 +13,7 @@ class RestaurantT(Base):
     num_reviews = Column(Integer)
     cuisines = Column(String)
     address = Column(String)
+    opening_hour = Column(String)
 
     def __repr__(self):
-        return f"<RestaurantT(_id={self._id}, name={self.name}, rating={self.rating}, num_reviews={self.num_reviews}, cuisine={self.cuisines}, address={self.address})>"
+        return f"<RestaurantT(_id={self._id}, name={self.name}, rating={self.rating}, num_reviews={self.num_reviews}, cuisine={self.cuisines}, address={self.address}, opening_hour={self.opening_hour})>"
