@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<head>    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://rawcdn.githack.com/python-visualization/folium/master/folium/templates/leaflet.awesome.rotate.css"/>
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_0a3a0b07de7044aebfc4f2f4fee9aaac {
+                    position: relative;
+                    width: 1200.0px;
+                    height: 600.0px;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css"/>
+</head>
+<body>    
+    
+            <div class="folium-map" id="map_0a3a0b07de7044aebfc4f2f4fee9aaac" ></div>
+        
+</body>
+<script>    
+    
+            var map_0a3a0b07de7044aebfc4f2f4fee9aaac = L.map(
+                "map_0a3a0b07de7044aebfc4f2f4fee9aaac",
+                {
+                    center: [13.7414474, 100.5476316],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 20,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_23aa8815865b4006ae4d67c2fd9c174c = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_0a3a0b07de7044aebfc4f2f4fee9aaac);
+        
+    
+            var marker_cluster_a9ee632c73d6428a981cf4def0152a75 = L.markerClusterGroup(
+                {}
+            );
+            map_0a3a0b07de7044aebfc4f2f4fee9aaac.addLayer(marker_cluster_a9ee632c73d6428a981cf4def0152a75);
+        
+    
+            var marker_2144b466aa2a4f4e9ae8ac5cffd3c132 = L.marker(
+                [13.7414474, 100.5476316],
+                {}
+            ).addTo(marker_cluster_a9ee632c73d6428a981cf4def0152a75);
+        
+    
+            var icon_107dad989050451da64269761a3bc36e = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_2144b466aa2a4f4e9ae8ac5cffd3c132.setIcon(icon_107dad989050451da64269761a3bc36e);
+        
+    
+        var popup_6f3197c6e6ee463d9f25809574d09937 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_fd78432edd30401795e616b50d8b3af5 = $(`<div id="html_fd78432edd30401795e616b50d8b3af5" style="width: 100.0%; height: 100.0%;">Name: The Rain Tree Cafe         Adress: 61 Wireless Road (Witthayu) The Athenee Hotel, Bangkok 10330 Thailand          Tripadvisor: 5.0          Michelin Star: 0.0          Cuisine: Seafood</div>`)[0];
+            popup_6f3197c6e6ee463d9f25809574d09937.setContent(html_fd78432edd30401795e616b50d8b3af5);
+        
+
+        marker_2144b466aa2a4f4e9ae8ac5cffd3c132.bindPopup(popup_6f3197c6e6ee463d9f25809574d09937)
+        ;
+
+        
+    
+    
+            var marker_c0e24b2429a1494d8a22bdb3ea93162f = L.marker(
+                [13.7430122, 100.5421962],
+                {}
+            ).addTo(marker_cluster_a9ee632c73d6428a981cf4def0152a75);
+        
+    
+            var icon_654fd0c459e64da6b9880b9a3ed5abcc = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_c0e24b2429a1494d8a22bdb3ea93162f.setIcon(icon_654fd0c459e64da6b9880b9a3ed5abcc);
+        
+    
+        var popup_526edeb7148443b1999d7e300e60d975 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_4f800acf0c85443fab891b76300e9c76 = $(`<div id="html_4f800acf0c85443fab891b76300e9c76" style="width: 100.0%; height: 100.0%;">Name: The Rain Tree Cafe         Adress: 61 Wireless Road (Witthayu) The Athenee Hotel, Bangkok 10330 Thailand          Tripadvisor: 5.0          Michelin Star: 0.0          Cuisine: Sushi</div>`)[0];
+            popup_526edeb7148443b1999d7e300e60d975.setContent(html_4f800acf0c85443fab891b76300e9c76);
+        
+
+        marker_c0e24b2429a1494d8a22bdb3ea93162f.bindPopup(popup_526edeb7148443b1999d7e300e60d975)
+        ;
+
+        
+    
+    
+            var marker_6cea0bc4fb9545f685c3953d5e8470cf = L.marker(
+                [13.742838, 100.547793],
+                {}
+            ).addTo(marker_cluster_a9ee632c73d6428a981cf4def0152a75);
+        
+    
+            var icon_ff6965b493aa41d7ba44e843c4533517 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_6cea0bc4fb9545f685c3953d5e8470cf.setIcon(icon_ff6965b493aa41d7ba44e843c4533517);
+        
+    
+        var popup_2dccc5e5bc3542a7a3981c7b05af0ebf = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_5f79625967c84ff4abe43458e22e41d1 = $(`<div id="html_5f79625967c84ff4abe43458e22e41d1" style="width: 100.0%; height: 100.0%;">Name: The Rain Tree Cafe         Adress: 61 Wireless Road (Witthayu) The Athenee Hotel, Bangkok 10330 Thailand          Tripadvisor: 5.0          Michelin Star: 0.0          Cuisine: International</div>`)[0];
+            popup_2dccc5e5bc3542a7a3981c7b05af0ebf.setContent(html_5f79625967c84ff4abe43458e22e41d1);
+        
+
+        marker_6cea0bc4fb9545f685c3953d5e8470cf.bindPopup(popup_2dccc5e5bc3542a7a3981c7b05af0ebf)
+        ;
+
+        
+    
+    
+            var marker_90b786c465c54cf9b40481c2f894e90f = L.marker(
+                [13.7414578, 100.5476531],
+                {}
+            ).addTo(marker_cluster_a9ee632c73d6428a981cf4def0152a75);
+        
+    
+            var icon_2e0b710be04646cdbff6e049afa51e15 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_90b786c465c54cf9b40481c2f894e90f.setIcon(icon_2e0b710be04646cdbff6e049afa51e15);
+        
+    
+        var popup_1ee5889b9b9c4bdfa3061a21c5088739 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_f3da7c79c0ca4d77b21cb1a96510ba7a = $(`<div id="html_f3da7c79c0ca4d77b21cb1a96510ba7a" style="width: 100.0%; height: 100.0%;">Name: Flavors         Adress: 518/8 Ploenchit Road Renaissance Bangkok Ratchaprasong Hotel, Bangkok 10330 Thailand          Tripadvisor: 5.0          Michelin Star: 0.0          Cuisine: Seafood</div>`)[0];
+            popup_1ee5889b9b9c4bdfa3061a21c5088739.setContent(html_f3da7c79c0ca4d77b21cb1a96510ba7a);
+        
+
+        marker_90b786c465c54cf9b40481c2f894e90f.bindPopup(popup_1ee5889b9b9c4bdfa3061a21c5088739)
+        ;
+
+        
+    
+    
+            var marker_e5e15e8f56e543db9285468a9ddead54 = L.marker(
+                [13.7441194, 100.5422698],
+                {}
+            ).addTo(marker_cluster_a9ee632c73d6428a981cf4def0152a75);
+        
+    
+            var icon_ffd2bf7515f6436fa3ccc3f90915ebe8 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_e5e15e8f56e543db9285468a9ddead54.setIcon(icon_ffd2bf7515f6436fa3ccc3f90915ebe8);
+        
+    
+        var popup_6cedaa59ea2c4444be12005b3eadb600 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_1be57e12e8e44d59a982ed6b9c0c71a8 = $(`<div id="html_1be57e12e8e44d59a982ed6b9c0c71a8" style="width: 100.0%; height: 100.0%;">Name: Flavors         Adress: 518/8 Ploenchit Road Renaissance Bangkok Ratchaprasong Hotel, Bangkok 10330 Thailand          Tripadvisor: 5.0          Michelin Star: 0.0          Cuisine: Asian</div>`)[0];
+            popup_6cedaa59ea2c4444be12005b3eadb600.setContent(html_1be57e12e8e44d59a982ed6b9c0c71a8);
+        
+
+        marker_e5e15e8f56e543db9285468a9ddead54.bindPopup(popup_6cedaa59ea2c4444be12005b3eadb600)
+        ;
+
+        
+    
+    
+            var marker_c0140a0e6e804c4dbb59e2914d14e1fb = L.marker(
+                [13.7413881, 100.5476964],
+                {}
+            ).addTo(marker_cluster_a9ee632c73d6428a981cf4def0152a75);
+        
+    
+            var icon_b812cadd83894876b590f29020dd753b = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_c0140a0e6e804c4dbb59e2914d14e1fb.setIcon(icon_b812cadd83894876b590f29020dd753b);
+        
+    
+        var popup_18daa489849145809d1b6c3da5b451d6 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_8016ec7304f341429ad7e572b3155c6f = $(`<div id="html_8016ec7304f341429ad7e572b3155c6f" style="width: 100.0%; height: 100.0%;">Name: Flavors         Adress: 518/8 Ploenchit Road Renaissance Bangkok Ratchaprasong Hotel, Bangkok 10330 Thailand          Tripadvisor: 5.0          Michelin Star: 0.0          Cuisine: International</div>`)[0];
+            popup_18daa489849145809d1b6c3da5b451d6.setContent(html_8016ec7304f341429ad7e572b3155c6f);
+        
+
+        marker_c0140a0e6e804c4dbb59e2914d14e1fb.bindPopup(popup_18daa489849145809d1b6c3da5b451d6)
+        ;
+
+        
+    
+    
+            var marker_95bed4b5d06b4035ac4b31df6a5b5b2a = L.marker(
+                [13.741392, 100.5477864],
+                {}
+            ).addTo(marker_cluster_a9ee632c73d6428a981cf4def0152a75);
+        
+    
+            var icon_2295d31aa5fb4d78ba64bacd7b2f013c = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_95bed4b5d06b4035ac4b31df6a5b5b2a.setIcon(icon_2295d31aa5fb4d78ba64bacd7b2f013c);
+        
+    
+        var popup_e0803bf862ea4ebdab7bf08c8a841071 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_80d2a1f661be4ca5ae7a3dd22af891d2 = $(`<div id="html_80d2a1f661be4ca5ae7a3dd22af891d2" style="width: 100.0%; height: 100.0%;">Name: Elements         Adress: The Okura Prestige Bangkok; 25FL,  57 Wireless Road, Park Ventures Ecoplex, Lumpini, Pathumwan, Bangkok 10330 Thailand          Tripadvisor: 5.0          Michelin Star: 1.0          Cuisine: French</div>`)[0];
+            popup_e0803bf862ea4ebdab7bf08c8a841071.setContent(html_80d2a1f661be4ca5ae7a3dd22af891d2);
+        
+
+        marker_95bed4b5d06b4035ac4b31df6a5b5b2a.bindPopup(popup_e0803bf862ea4ebdab7bf08c8a841071)
+        ;
+
+        
+    
+    
+            var marker_36ed205567e54762afcc7502f04ce3e3 = L.marker(
+                [13.7428479, 100.5479016],
+                {}
+            ).addTo(marker_cluster_a9ee632c73d6428a981cf4def0152a75);
+        
+    
+            var icon_9e9163c724c14d9cb3b3515007d9c115 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_36ed205567e54762afcc7502f04ce3e3.setIcon(icon_9e9163c724c14d9cb3b3515007d9c115);
+        
+    
+        var popup_3435a801f426436fb4d83d5a82c01281 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_b0d1260e5ad244a19f3ce0b545bc53d0 = $(`<div id="html_b0d1260e5ad244a19f3ce0b545bc53d0" style="width: 100.0%; height: 100.0%;">Name: Elements         Adress: The Okura Prestige Bangkok; 25FL,  57 Wireless Road, Park Ventures Ecoplex, Lumpini, Pathumwan, Bangkok 10330 Thailand          Tripadvisor: 5.0          Michelin Star: 1.0          Cuisine: Contemporary</div>`)[0];
+            popup_3435a801f426436fb4d83d5a82c01281.setContent(html_b0d1260e5ad244a19f3ce0b545bc53d0);
+        
+
+        marker_36ed205567e54762afcc7502f04ce3e3.bindPopup(popup_3435a801f426436fb4d83d5a82c01281)
+        ;
+
+        
+    
+    
+            var marker_7b1b7a9d3dae45c7aa5ebebfbc1c88eb = L.marker(
+                [13.7435927, 100.542518],
+                {}
+            ).addTo(marker_cluster_a9ee632c73d6428a981cf4def0152a75);
+        
+    
+            var icon_0dfc7bb992bc4499aa7372d3c274386f = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_7b1b7a9d3dae45c7aa5ebebfbc1c88eb.setIcon(icon_0dfc7bb992bc4499aa7372d3c274386f);
+        
+    
+        var popup_1b6c2bfe804b458f96abbf2da4adba05 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_0ad28a01b2a34733a267b45f94f21701 = $(`<div id="html_0ad28a01b2a34733a267b45f94f21701" style="width: 100.0%; height: 100.0%;">Name: The Silk Road         Adress: 61 Witthayu Road The Athenee Hotel, Bangkok 10330 Thailand          Tripadvisor: 5.0          Michelin Star: 0.0          Cuisine: Chinese</div>`)[0];
+            popup_1b6c2bfe804b458f96abbf2da4adba05.setContent(html_0ad28a01b2a34733a267b45f94f21701);
+        
+
+        marker_7b1b7a9d3dae45c7aa5ebebfbc1c88eb.bindPopup(popup_1b6c2bfe804b458f96abbf2da4adba05)
+        ;
+
+        
+    
+    
+            var marker_59e0cd7739fa4660acdacfa19d139457 = L.marker(
+                [13.743898, 100.54706],
+                {}
+            ).addTo(marker_cluster_a9ee632c73d6428a981cf4def0152a75);
+        
+    
+            var icon_5e011e72002f45a292a059a12aa295fb = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_59e0cd7739fa4660acdacfa19d139457.setIcon(icon_5e011e72002f45a292a059a12aa295fb);
+        
+    
+        var popup_54383ddde08f46d5bf83eb39d5135e01 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_4e2a9fe55582429ca57f72bea939e2e0 = $(`<div id="html_4e2a9fe55582429ca57f72bea939e2e0" style="width: 100.0%; height: 100.0%;">Name: The Silk Road         Adress: 61 Witthayu Road The Athenee Hotel, Bangkok 10330 Thailand          Tripadvisor: 5.0          Michelin Star: 0.0          Cuisine: Asian</div>`)[0];
+            popup_54383ddde08f46d5bf83eb39d5135e01.setContent(html_4e2a9fe55582429ca57f72bea939e2e0);
+        
+
+        marker_59e0cd7739fa4660acdacfa19d139457.bindPopup(popup_54383ddde08f46d5bf83eb39d5135e01)
+        ;
+
+        
+    
+    
+            var marker_a9b43862bc324a9f90b44a095c72f952 = L.marker(
+                [13.740678, 100.54038],
+                {}
+            ).addTo(marker_cluster_a9ee632c73d6428a981cf4def0152a75);
+        
+    
+            var icon_5da85cf832884ce88a1a3b1eebed98ed = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_a9b43862bc324a9f90b44a095c72f952.setIcon(icon_5da85cf832884ce88a1a3b1eebed98ed);
+        
+    
+        var popup_d94c1b01da3f437fb49122f58e4711b9 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_f9b83f89eaf845faae190e4ab679b54e = $(`<div id="html_f9b83f89eaf845faae190e4ab679b54e" style="width: 100.0%; height: 100.0%;">Name: The One by Renaissance         Adress: Renaissance Bangkok Ratchaprasong Hotel 518/8 Ploenchit Road, Bangkok 10330 Thailand          Tripadvisor: 5.0          Michelin Star: 0.0          Cuisine: International</div>`)[0];
+            popup_d94c1b01da3f437fb49122f58e4711b9.setContent(html_f9b83f89eaf845faae190e4ab679b54e);
+        
+
+        marker_a9b43862bc324a9f90b44a095c72f952.bindPopup(popup_d94c1b01da3f437fb49122f58e4711b9)
+        ;
+
+        
+    
+    
+            var marker_a11f1b6ec25d4a4bb35d507bc8eec7a9 = L.marker(
+                [13.7444593, 100.5347883],
+                {}
+            ).addTo(marker_cluster_a9ee632c73d6428a981cf4def0152a75);
+        
+    
+            var icon_9c2b958c4461427095109bd962709645 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_a11f1b6ec25d4a4bb35d507bc8eec7a9.setIcon(icon_9c2b958c4461427095109bd962709645);
+        
+    
+        var popup_8d1969a44b9f461793342c91bbd0c980 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_08c6705251d64dad80d0a54e3e3f3522 = $(`<div id="html_08c6705251d64dad80d0a54e3e3f3522" style="width: 100.0%; height: 100.0%;">Name: The One by Renaissance         Adress: Renaissance Bangkok Ratchaprasong Hotel 518/8 Ploenchit Road, Bangkok 10330 Thailand          Tripadvisor: 5.0          Michelin Star: 0.0          Cuisine: Street Food</div>`)[0];
+            popup_8d1969a44b9f461793342c91bbd0c980.setContent(html_08c6705251d64dad80d0a54e3e3f3522);
+        
+
+        marker_a11f1b6ec25d4a4bb35d507bc8eec7a9.bindPopup(popup_8d1969a44b9f461793342c91bbd0c980)
+        ;
+
+        
+    
+    
+            var marker_412a5c0e86ac4c07aef028e72b2b00f6 = L.marker(
+                [13.7406611, 100.5402865],
+                {}
+            ).addTo(marker_cluster_a9ee632c73d6428a981cf4def0152a75);
+        
+    
+            var icon_47a7f92f3b3f4923bf295b9594f9c5c4 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_412a5c0e86ac4c07aef028e72b2b00f6.setIcon(icon_47a7f92f3b3f4923bf295b9594f9c5c4);
+        
+    
+        var popup_39c2ffed38ac4bf68fa9d021bf340eb9 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_5f001944967a420ba7d323218dd80b82 = $(`<div id="html_5f001944967a420ba7d323218dd80b82" style="width: 100.0%; height: 100.0%;">Name: Kintsugi Bangkok by Jeff Ramsey         Adress: 61 Witthayu Road, Khwaeng Lumphini, Khet Pathum Wan The Athenee Hotel, Bangkok 10330 Thailand          Tripadvisor: 5.0          Michelin Star: 0.0          Cuisine: Japanese</div>`)[0];
+            popup_39c2ffed38ac4bf68fa9d021bf340eb9.setContent(html_5f001944967a420ba7d323218dd80b82);
+        
+
+        marker_412a5c0e86ac4c07aef028e72b2b00f6.bindPopup(popup_39c2ffed38ac4bf68fa9d021bf340eb9)
+        ;
+
+        
+    
+    
+            var marker_fe99c2b9876743daaf2068dc09ca747e = L.marker(
+                [13.7433701, 100.5247451],
+                {}
+            ).addTo(marker_cluster_a9ee632c73d6428a981cf4def0152a75);
+        
+    
+            var icon_c443f69978004e36891392265b413552 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_fe99c2b9876743daaf2068dc09ca747e.setIcon(icon_c443f69978004e36891392265b413552);
+        
+    
+        var popup_e5dadef61598455aa7da203aa2b41b60 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_01e15480b9fe4162aea26312b990eb10 = $(`<div id="html_01e15480b9fe4162aea26312b990eb10" style="width: 100.0%; height: 100.0%;">Name: Kintsugi Bangkok by Jeff Ramsey         Adress: 61 Witthayu Road, Khwaeng Lumphini, Khet Pathum Wan The Athenee Hotel, Bangkok 10330 Thailand          Tripadvisor: 5.0          Michelin Star: 0.0          Cuisine: Asian</div>`)[0];
+            popup_e5dadef61598455aa7da203aa2b41b60.setContent(html_01e15480b9fe4162aea26312b990eb10);
+        
+
+        marker_fe99c2b9876743daaf2068dc09ca747e.bindPopup(popup_e5dadef61598455aa7da203aa2b41b60)
+        ;
+
+        
+    
+    
+            var marker_e9f6e77b68ea44eea016577b4db3d080 = L.marker(
+                [13.741087, 100.5406591],
+                {}
+            ).addTo(marker_cluster_a9ee632c73d6428a981cf4def0152a75);
+        
+    
+            var icon_15df95c5404b4ad3bdc5842a0e8ace08 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_e9f6e77b68ea44eea016577b4db3d080.setIcon(icon_15df95c5404b4ad3bdc5842a0e8ace08);
+        
+    
+        var popup_af6c09b5dd994ffdb39eeb6e1056eeb2 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_a2b5113e4bb9468d9d59e3212ece9e38 = $(`<div id="html_a2b5113e4bb9468d9d59e3212ece9e38" style="width: 100.0%; height: 100.0%;">Name: The Allium Bangkok         Adress: 61 Witthayu Road, Khwaeng Lumphini, Khet Pathum Wan Athenee Hotel, Bangkok 10330 Thailand          Tripadvisor: 5.0          Michelin Star: 0.0          Cuisine: French</div>`)[0];
+            popup_af6c09b5dd994ffdb39eeb6e1056eeb2.setContent(html_a2b5113e4bb9468d9d59e3212ece9e38);
+        
+
+        marker_e9f6e77b68ea44eea016577b4db3d080.bindPopup(popup_af6c09b5dd994ffdb39eeb6e1056eeb2)
+        ;
+
+        
+    
+    
+            var marker_2a6f7e3801c243c9befe235de737498e = L.marker(
+                [13.747866, 100.5385189],
+                {}
+            ).addTo(marker_cluster_a9ee632c73d6428a981cf4def0152a75);
+        
+    
+            var icon_a4dbf7912fc94e988d99b37a40249ae1 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_2a6f7e3801c243c9befe235de737498e.setIcon(icon_a4dbf7912fc94e988d99b37a40249ae1);
+        
+    
+        var popup_0109e962042145d585aacf9e4d3201e5 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_27128de92b054e9cb9a1e893148d8727 = $(`<div id="html_27128de92b054e9cb9a1e893148d8727" style="width: 100.0%; height: 100.0%;">Name: The Allium Bangkok         Adress: 61 Witthayu Road, Khwaeng Lumphini, Khet Pathum Wan Athenee Hotel, Bangkok 10330 Thailand          Tripadvisor: 5.0          Michelin Star: 0.0          Cuisine: European</div>`)[0];
+            popup_0109e962042145d585aacf9e4d3201e5.setContent(html_27128de92b054e9cb9a1e893148d8727);
+        
+
+        marker_2a6f7e3801c243c9befe235de737498e.bindPopup(popup_0109e962042145d585aacf9e4d3201e5)
+        ;
+
+        
+    
+    
+            var marker_310f4e0162414f5d996ca5f84b18835b = L.marker(
+                [13.742776, 100.549795],
+                {}
+            ).addTo(marker_cluster_a9ee632c73d6428a981cf4def0152a75);
+        
+    
+            var icon_09cbc0b971ee4c1c9b9b7fc302d71d15 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_310f4e0162414f5d996ca5f84b18835b.setIcon(icon_09cbc0b971ee4c1c9b9b7fc302d71d15);
+        
+    
+        var popup_be342f317c97498b9e3a00932188006a = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_de302c1556d34457ae36b9cc6a0ed1a6 = $(`<div id="html_de302c1556d34457ae36b9cc6a0ed1a6" style="width: 100.0%; height: 100.0%;">Name: Yamazato         Adress: The Okura Prestige Bangkok; Fl 24, 57 Wireless Road Park Ventures Ecoplex, Lumpini, Bangkok 10330 Thailand          Tripadvisor: 4.5          Michelin Star: 0.0          Cuisine: Japanese</div>`)[0];
+            popup_be342f317c97498b9e3a00932188006a.setContent(html_de302c1556d34457ae36b9cc6a0ed1a6);
+        
+
+        marker_310f4e0162414f5d996ca5f84b18835b.bindPopup(popup_be342f317c97498b9e3a00932188006a)
+        ;
+
+        
+    
+    
+            var marker_a04080bd9f3e48769923653b96073a42 = L.marker(
+                [13.744866, 100.5297873],
+                {}
+            ).addTo(marker_cluster_a9ee632c73d6428a981cf4def0152a75);
+        
+    
+            var icon_40edd549a32f4985a179626c276a8b29 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_a04080bd9f3e48769923653b96073a42.setIcon(icon_40edd549a32f4985a179626c276a8b29);
+        
+    
+        var popup_1ffdba692ff3425480fe3dc83d880119 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_eafa1aeca74b4cf19b7b03aa804c30c3 = $(`<div id="html_eafa1aeca74b4cf19b7b03aa804c30c3" style="width: 100.0%; height: 100.0%;">Name: Yamazato         Adress: The Okura Prestige Bangkok; Fl 24, 57 Wireless Road Park Ventures Ecoplex, Lumpini, Bangkok 10330 Thailand          Tripadvisor: 4.5          Michelin Star: 0.0          Cuisine: Sushi</div>`)[0];
+            popup_1ffdba692ff3425480fe3dc83d880119.setContent(html_eafa1aeca74b4cf19b7b03aa804c30c3);
+        
+
+        marker_a04080bd9f3e48769923653b96073a42.bindPopup(popup_1ffdba692ff3425480fe3dc83d880119)
+        ;
+
+        
+    
+    
+            var marker_174eb3d6a90a45358846d6081b54250b = L.marker(
+                [13.7427402, 100.5417496],
+                {}
+            ).addTo(marker_cluster_a9ee632c73d6428a981cf4def0152a75);
+        
+    
+            var icon_0728db5a4be045a79b284d1dd2c56d21 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_174eb3d6a90a45358846d6081b54250b.setIcon(icon_0728db5a4be045a79b284d1dd2c56d21);
+        
+    
+        var popup_a4b86fee337340c4acc07e1d7eaf9596 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_4cd7ac1c42e84c21ab624e08412ef16b = $(`<div id="html_4cd7ac1c42e84c21ab624e08412ef16b" style="width: 100.0%; height: 100.0%;">Name: Yamazato         Adress: The Okura Prestige Bangkok; Fl 24, 57 Wireless Road Park Ventures Ecoplex, Lumpini, Bangkok 10330 Thailand          Tripadvisor: 4.5          Michelin Star: 0.0          Cuisine: Healthy</div>`)[0];
+            popup_a4b86fee337340c4acc07e1d7eaf9596.setContent(html_4cd7ac1c42e84c21ab624e08412ef16b);
+        
+
+        marker_174eb3d6a90a45358846d6081b54250b.bindPopup(popup_a4b86fee337340c4acc07e1d7eaf9596)
+        ;
+
+        
+    
+    
+            var marker_341870212bd244b4a1b673e6146dede8 = L.marker(
+                [13.7426526, 100.541736],
+                {}
+            ).addTo(marker_cluster_a9ee632c73d6428a981cf4def0152a75);
+        
+    
+            var icon_6488ad25e6e34d098fc145f2949878e6 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_341870212bd244b4a1b673e6146dede8.setIcon(icon_6488ad25e6e34d098fc145f2949878e6);
+        
+    
+        var popup_3f2181d7ee3046a1ac0bbbfa3b3864a0 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_eb32f9394aa5466f86d72c0310ff1b6f = $(`<div id="html_eb32f9394aa5466f86d72c0310ff1b6f" style="width: 100.0%; height: 100.0%;">Name: Yamazato         Adress: The Okura Prestige Bangkok; Fl 24, 57 Wireless Road Park Ventures Ecoplex, Lumpini, Bangkok 10330 Thailand          Tripadvisor: 4.5          Michelin Star: 0.0          Cuisine: Grill</div>`)[0];
+            popup_3f2181d7ee3046a1ac0bbbfa3b3864a0.setContent(html_eb32f9394aa5466f86d72c0310ff1b6f);
+        
+
+        marker_341870212bd244b4a1b673e6146dede8.bindPopup(popup_3f2181d7ee3046a1ac0bbbfa3b3864a0)
+        ;
+
+        
+    
+    
+            var marker_56d145aaaa0a46c38922cfaf0d1bfa55 = L.marker(
+                [13.7354455, 100.5422186],
+                {}
+            ).addTo(marker_cluster_a9ee632c73d6428a981cf4def0152a75);
+        
+    
+            var icon_d2ac508d06184cd28005cea8a545836d = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_56d145aaaa0a46c38922cfaf0d1bfa55.setIcon(icon_d2ac508d06184cd28005cea8a545836d);
+        
+    
+        var popup_80f8292be20d46a086693f21163c9af0 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_ebc4a320fabf42a58968dd9ce6d876fe = $(`<div id="html_ebc4a320fabf42a58968dd9ce6d876fe" style="width: 100.0%; height: 100.0%;">Name: R Bar         Adress: 518/8  Ploenchit Road,Lumpini,Pathum Wan Lobby Floor,Renaissance Bangkok Ratchaprasong Hotel, Bangkok 10330 Thailand          Tripadvisor: 5.0          Michelin Star: 0.0          Cuisine: Bar</div>`)[0];
+            popup_80f8292be20d46a086693f21163c9af0.setContent(html_ebc4a320fabf42a58968dd9ce6d876fe);
+        
+
+        marker_56d145aaaa0a46c38922cfaf0d1bfa55.bindPopup(popup_80f8292be20d46a086693f21163c9af0)
+        ;
+
+        
+    
+    
+            var marker_ed778be428ed4b44bd4086905fb44a32 = L.marker(
+                [13.7402097, 100.5434612],
+                {}
+            ).addTo(marker_cluster_a9ee632c73d6428a981cf4def0152a75);
+        
+    
+            var icon_676daa5efb7b40639f6300ad0b215eb8 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_ed778be428ed4b44bd4086905fb44a32.setIcon(icon_676daa5efb7b40639f6300ad0b215eb8);
+        
+    
+        var popup_ad8efd3455824a84924d430a243dcd18 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_3b83c613e54a42dea80950b1ab72129b = $(`<div id="html_3b83c613e54a42dea80950b1ab72129b" style="width: 100.0%; height: 100.0%;">Name: R Bar         Adress: 518/8  Ploenchit Road,Lumpini,Pathum Wan Lobby Floor,Renaissance Bangkok Ratchaprasong Hotel, Bangkok 10330 Thailand          Tripadvisor: 5.0          Michelin Star: 0.0          Cuisine: Wine Bar</div>`)[0];
+            popup_ad8efd3455824a84924d430a243dcd18.setContent(html_3b83c613e54a42dea80950b1ab72129b);
+        
+
+        marker_ed778be428ed4b44bd4086905fb44a32.bindPopup(popup_ad8efd3455824a84924d430a243dcd18)
+        ;
+
+        
+    
+    
+            var marker_7c3ed9e5e67741b8ab944ff20317b000 = L.marker(
+                [13.7444895, 100.5418773],
+                {}
+            ).addTo(marker_cluster_a9ee632c73d6428a981cf4def0152a75);
+        
+    
+            var icon_6d48576de1b24e8284cd83fe42e85986 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_7c3ed9e5e67741b8ab944ff20317b000.setIcon(icon_6d48576de1b24e8284cd83fe42e85986);
+        
+    
+        var popup_086667a51a5841cca5d1f487c6f153b6 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_97deef059fb14d57aa5b133ea2c964f1 = $(`<div id="html_97deef059fb14d57aa5b133ea2c964f1" style="width: 100.0%; height: 100.0%;">Name: Penthouse Bar + Grill         Adress: 88 Wireless Road 34th - 36th Floor, Park Hyatt Bangkok, Bangkok 10330 Thailand          Tripadvisor: 5.0          Michelin Star: 0.0          Cuisine: Bar</div>`)[0];
+            popup_086667a51a5841cca5d1f487c6f153b6.setContent(html_97deef059fb14d57aa5b133ea2c964f1);
+        
+
+        marker_7c3ed9e5e67741b8ab944ff20317b000.bindPopup(popup_086667a51a5841cca5d1f487c6f153b6)
+        ;
+
+        
+    
+</script>
