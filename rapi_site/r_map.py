@@ -4,86 +4,109 @@ from flask import (
 from werkzeug.exceptions import abort
 
 from rapi_site.database import db_session
+from rapi_site.models import Restaurant, District, Cuisine
 import folium
 from dirs import ROOT_DIR
+from folium.plugins import MarkerCluster
+import tkinter as tk
+
+root = tk.Tk()
+
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+
 
 bp = Blueprint('r_map', __name__)
 
-labels = [
-    'JAN', 'FEB', 'MAR', 'APR',
-    'MAY', 'JUN', 'JUL', 'AUG',
-    'SEP', 'OCT', 'NOV', 'DEC'
-]
 
-values = [
-    967.67, 1190.89, 1079.75, 1349.19,
-    2328.91, 2504.28, 2873.83, 4764.87,
-    4349.29, 6458.30, 9907, 16297
-]
+def generate_map(list, list1, list2, list3,list4,list5):
+    map2 = folium.Map(width=1450,height=720,location=[13.728, 100.561], zoom_start=20)
 
-values2 = [
-    66.67, 117.89, 1079.75, 1349.19,
-    2328.91, 2504.28, 2873.83, 4764.87,
-    4349.29, 6458.30, 9907, 16297
-]
+    marker_cluster = MarkerCluster().add_to(map2)
+    print("pp")
 
 
-colors = [
-    "#F7464A", "#46BFBD", "#FDB45C", "#FEDCBA",
-    "#ABCDEF", "#DDDDDD", "#ABCABC", "#4169E1",
-    "#C71585", "#FF4500", "#FEDCBA", "#46BFBD"]
+    for point in range(0, len(list)):
+        l1 = f'''Name: {list1[point]} Adress: {list2[point]}  Tripadvisor: {list3[point]}  Michelin Star: {list4[point]}  Cuisine: {list5[point]}'''
+        folium.Marker(list[point], popup=folium.Popup(l1,
+                                       max_width=400,min_width=300),
+                      icon=folium.Icon(color='darkblue', icon_color='white', angle=0, prefix='fa'
+                                       )).add_to(
+            marker_cluster)
+    map2.save(str(ROOT_DIR / 'rapi_site/templates/map_test.html'))
 
 
-labels_1 = [
-    'Bananas', 'Apples',
-    'Oranges', 'Strawberries', 'Lemons',
-    'Watermelons', 'Coconuts'
-]
-
-values_1 = [
-    10.0, 20.0, 10.0, 20.0, 20.0, 10.0, 10.0
-]
-
-labels_2 = [
-    'Bananas', 'Apples',
-    'Oranges', 'Strawberries', 'Lemons',
-    'Watermelons', 'Coconuts'
-]
-
-values_2 = [
-    20.0, 10.0, 20.0, 10.0, 10.0, 20.0, 10.0
-]
-
-labels_3 = [
-    'Bananas', 'Apples',
-    'Oranges', 'Strawberries', 'Lemons',
-    'Watermelons', 'Coconuts'
-]
-
-values_3 = [
-    30.0, 10.0, 10.0, 10.0, 20.0, 10.0, 10.0
-]
-
-
-def generate_map():
-    start_coords = (7.1898, 100.5954)
-    folium_map = folium.Map(location=start_coords, zoom_start=14)
-    folium_map.save(str(ROOT_DIR / 'rapi_site/templates/map.html'))
-    # return folium_map._repr_html_()
-
-
-@bp.route('/')
+@bp.route('/', methods=('GET', 'POST'))
 def index():
-    bar_label1 = labels
-    bar_value1 = values
-    bar_label2 = labels_1
-    bar_value2 = values_1
-    bar_value3 = values2
-    generate_map()
-    return render_template('r_map/index.html'
-                           , title1='Cuisine', max=17000, set2=zip(values_1, labels_1, colors),
-                           title2='Wongnai rating', label1=bar_label1, value1=bar_value1, value3=bar_value3,
-                           title3='Tripadvisor rating', label2=bar_label2, value2=bar_value2)
+    print("5555555555", request.method)
+    if request.method == 'POST':
+        print("success")
+        district_h = request.form["nm"]
+
+        query_lat = db_session.query(Restaurant.latitude).join(District).filter(District.id == Restaurant.district_id) .\
+            filter(District.name == district_h).all()
+        query_long = db_session.query(Restaurant.longitude).join(District).filter(District.id == Restaurant.district_id). \
+            filter(District.name == district_h).all()
+        query_name = db_session.query(Restaurant.name).join(District).filter(
+            District.id == Restaurant.district_id). \
+            filter(District.name == district_h).all()
+        query_trip_rating = db_session.query(Restaurant.tripadvisor_rating).join(District).filter(
+            District.id == Restaurant.district_id). \
+            filter(District.name == district_h).all()
+        query_adress = db_session.query(Restaurant.address).join(District).filter(
+            District.id == Restaurant.district_id). \
+            filter(District.name == district_h).all()
+        query_michelin = db_session.query(Restaurant.michelin_star).join(District).filter(
+            District.id == Restaurant.district_id). \
+            filter(District.name == district_h).all()
+        query_cuisine = db_session.query(Cuisine.name).join(Restaurant).join(District).filter(
+            District.id == Restaurant.district_id). \
+            filter(District.name == district_h).all()
+
+        count = db_session.query(Restaurant.latitude).join(District).filter(District.id ==Restaurant.district_id) .\
+            filter(District.name == district_h).count()
+
+
+        list_detail = []
+        list_detail1 = []
+        list_detail2 = []
+        list_detail3 = []
+        list_detail4= []
+        list_detail5 = []
+        for i in range(count):
+            if query_lat[i-1][0] == query_lat[i][0] and query_long[i-1][0] == query_long[i][0]:
+                if i == 0:
+                    list_detail.append([float(query_lat[i][0]), float(query_long[i][0])])
+            else:
+                list_detail.append([float(query_lat[i][0]), float(query_long[i][0])])
+
+        print(list_detail)
+
+        for i in range(count):
+            list_detail1.append(query_name[i][0])
+        print(list_detail1)
+
+        for i in range(count):
+            list_detail2.append(query_adress[i][0])
+        print(list_detail2)
+
+        for i in range(count):
+            list_detail3.append(float(query_trip_rating[i][0]))
+        print(list_detail3)
+
+        for i in range(count):
+            list_detail4.append(float(query_michelin[i][0]))
+        print(list_detail4)
+
+        for i in range(count):
+            list_detail5.append(query_cuisine[i][0])
+        print(list_detail5)
+
+        generate_map(list_detail,list_detail1,list_detail2,list_detail3,list_detail4,list_detail5)
+
+    district = db_session.query(District.name)
+    return render_template('r_map/index.html', dis_all=district)
+
 
 
 @bp.route('/chart')
@@ -93,6 +116,8 @@ def chart():
     bar_label2 = labels_1
     bar_value2 = values_1
     bar_value3 = values2
+    if request.method == 'POST':
+        print("66666666666666")
     return render_template('r_map/chart.html'
                            , title1='Cuisine', max=17000, set2=zip(values_1, labels_1, colors),
                            title2='Wongnai rating', label1=bar_label1, value1=bar_value1, value3=bar_value3,
