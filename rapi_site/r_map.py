@@ -20,7 +20,7 @@ bp = Blueprint('r_map', __name__)
 
 
 def generate_map(list, list1, list2, list3,list4,list5):
-    map2 = folium.Map(width=1200,height=600,location=list[0], zoom_start=20)
+    map2 = folium.Map(width=1200,height=600, location=[13.728, 100.561], zoom_start=20)
 
     marker_cluster = MarkerCluster().add_to(map2)
     print("pp")
