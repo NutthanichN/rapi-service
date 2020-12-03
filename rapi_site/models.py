@@ -15,9 +15,10 @@ class Restaurant(Base):
     address = Column(String(255))
     cuisine_id = Column(Integer, ForeignKey('cuisine.id', ondelete='CASCADE'))
     district_id = Column(Integer, ForeignKey('district.id', ondelete='CASCADE'))
+    michelin_star = Column(Integer)
 
     def __repr__(self):
-        return f"<Restaurant(name='{self.name}', lat='{self.latitude}', long='{self.longitude}', opening_hour='{self.opening_hour}', wongnai_rating='{self.wongnai_rating}', tripadvisor_rating='{self.tripadvisor_rating}, address='{self.address}, cuisine_id='{self.cuisine_id}')>"
+        return f"<Restaurant(name='{self.name}', lat='{self.latitude}', long='{self.longitude}', opening_hour='{self.opening_hour}', wongnai_rating='{self.wongnai_rating}', tripadvisor_rating='{self.tripadvisor_rating}, address='{self.address}, cuisine_id='{self.cuisine_id}, michelin_star ='{self.michelin_star }')>"
 
 
 class District(Base):
