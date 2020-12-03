@@ -19,7 +19,7 @@ class Restaurant(Base):
     michelin_star = Column(Integer)
 
     def __repr__(self):
-        return f"<Restaurant(name='{self.name}', lat='{self.latitude}', long='{self.longitude}', open_time='{self.open_time}', close_time='{self.close_time}', google_rating='{self.google_rating}', tripadvisor_rating='{self.tripadvisor_rating}, address='{self.address}, cuisine_id='{self.cuisine_id}')>"
+        return f"<Restaurant(name='{self.name}', lat='{self.latitude}', long='{self.longitude}', open_time='{self.open_time}', close_time='{self.close_time}', google_rating='{self.google_rating}', tripadvisor_rating='{self.tripadvisor_rating}, address='{self.address}, cuisine_id='{self.cuisine_id}', district_id='{self.district_id}')>"
 
 
 class District(Base):
