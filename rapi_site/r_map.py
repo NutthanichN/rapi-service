@@ -20,14 +20,18 @@ bp = Blueprint('r_map', __name__)
 
 
 def generate_map(list, list1, list2, list3,list4,list5):
-    map2 = folium.Map(width=1450,height=720,location=[13.728, 100.561], zoom_start=20)
+    map2 = folium.Map(width=1200,height=600,location=list[0], zoom_start=20)
 
     marker_cluster = MarkerCluster().add_to(map2)
     print("pp")
 
 
     for point in range(0, len(list)):
-        l1 = f'''Name: {list1[point]} Adress: {list2[point]}  Tripadvisor: {list3[point]}  Michelin Star: {list4[point]}  Cuisine: {list5[point]}'''
+        l1 = f'''Name: {list1[point]} \
+        Adress: {list2[point]}  \
+        Tripadvisor: {list3[point]}  \
+        Michelin Star: {list4[point]}  \
+        Cuisine: {list5[point]}'''
         folium.Marker(list[point], popup=folium.Popup(l1,
                                        max_width=400,min_width=300),
                       icon=folium.Icon(color='darkblue', icon_color='white', angle=0, prefix='fa'
@@ -71,7 +75,7 @@ def index():
         list_detail1 = []
         list_detail2 = []
         list_detail3 = []
-        list_detail4= []
+        list_detail4 = []
         list_detail5 = []
         for i in range(count):
             if query_lat[i-1][0] == query_lat[i][0] and query_long[i-1][0] == query_long[i][0]:
