@@ -83,101 +83,88 @@ districts_map = {
     'เขตคลองสาน': 'Khlong San', 'เขตคลองเตย': 'Khlong Toei', 'เขตหลักสี่': 'Lak Si',
     'เขตลาดกระบัง':'Lat Krabang', 'เขตลาดพร้าว': 'Lat Phrao', 'เขตมีนบุรี': 'Min Buri',
     'เขตหนองจอก': 'Nong Chok', 'เขตหนองแขม': 'Nong Khaem', 'เขตปทุมวัน': 'Pathum Wan',
-'เขตภาษีเจริญ':'Phasi Charoen',
-'เขตพญาไท':'Phaya Thai',
-'เขตพระโขนง':'Phra Khanong',
-'เขตพระนคร':'Phra Nakhon',
-'เขตป้อมปราบศัตรูพ่าย':'Pom Prap Sattru Phai',
-'เขตประเวศ':'Prawet',
-'เขตราษฏร์บูรณะ':'Rat Burana',
-'เขตราชเทวี':'Ratchathewi',
-'เขตสายไหม':'Sai Mai',
-'เขตสัมพันธวงศ์':'Samphanthawong',
-'เขตสะพานสูง':'Saphan Sung',
-'เขตสาทร':'Sathon',
-'เขตสวนหลวง':'Suan Luang',
-'เขตตลิ่งชัน':'Taling Chan',
-'เขตทวีวัฒนา':'Thawi Watthana',
-'เขตธนบุรี':'Thon Buri',
-'เขตทุ่งครุ':'Thung Khru',
-'เขตวังทองหลาง':'Wang Thonglang',
-'เขตวัฒนา':'Watthana',
-'เขตยานนาวา':'Yan Nawa',
+    'เขตภาษีเจริญ':'Phasi Charoen',
+    'เขตพญาไท':'Phaya Thai',
+    'เขตพระโขนง':'Phra Khanong',
+    'เขตพระนคร':'Phra Nakhon',
+    'เขตป้อมปราบศัตรูพ่าย':'Pom Prap Sattru Phai',
+    'เขตประเวศ':'Prawet',
+    'เขตราษฏร์บูรณะ':'Rat Burana',
+    'เขตราชเทวี':'Ratchathewi',
+    'เขตสายไหม':'Sai Mai',
+    'เขตสัมพันธวงศ์':'Samphanthawong',
+    'เขตสะพานสูง':'Saphan Sung',
+    'เขตสาทร':'Sathon',
+    'เขตสวนหลวง':'Suan Luang',
+    'เขตตลิ่งชัน':'Taling Chan',
+    'เขตทวีวัฒนา':'Thawi Watthana',
+    'เขตธนบุรี':'Thon Buri',
+    'เขตทุ่งครุ':'Thung Khru',
+    'เขตวังทองหลาง':'Wang Thonglang',
+    'เขตวัฒนา':'Watthana',
+    'เขตยานนาวา':'Yan Nawa',
 }
 
 
-# engine_lite = create_engine(f"sqlite:///{ROOT_DIR / 'web_scraping/data/tripadvisor/test_restaurants_t2.sqlite3'}")
-# connection = engine_lite.connect()
-# sql_query = sqlalchemy.text("SELECT name, rating, cuisines, address, opening_hour FROM restaurants_tripadvisor")
-# result = connection.execute(sql_query)
-# restaurants = result.fetchall()
+engine_lite = create_engine(f"sqlite:///{ROOT_DIR / 'join_data/restaurants_t2_3.sqlite3'}")
+connection = engine_lite.connect()
+sql_query = sqlalchemy.text("SELECT tripadvisor_name, latitude, longitude, google_rating FROM restaurants_tripadvisor_api")
+result = connection.execute(sql_query)
+restaurant_locations = result.fetchall()
 
-# geo_locator = Nominatim()
-# location = geo_locator.reverse("13.6592, 100.3991")
-#
-# print(location.address)
+engine_lite = create_engine(f"sqlite:///{ROOT_DIR / 'web_scraping/data/tripadvisor/restaurants_t2.sqlite3'}")
+connection = engine_lite.connect()
+geolocator = Nominatim(user_agent='rapi-service')
+
+for r_location in restaurant_locations:
+    # print(r_location)
+    # print()
+    tripadvisor_name, lat, long, g_rating = r_location
+    query = f"SELECT name, rating, cuisines, address, opening_hour " \
+            f"FROM restaurants_tripadvisor " \
+            f"WHERE name = '{tripadvisor_name}'"
+    sql_query = sqlalchemy.text(query)
+    result = connection.execute(sql_query)
+    restaurant = result.fetchone()
+
+    name, rating, cuisines, address, opening_hr = restaurant
+
+    new_cuisines = group_cuisine(cuisines)[1]
+    if new_cuisines:
+        commit_new_cuisines(new_cuisines)
+    cuisine_ids = group_cuisine(cuisines)[0]
+
+    open_time, close_time = split_time(opening_hr)
+
+    district_id = 0
+    location = geolocator.reverse(f"{lat}, {long}")
+    locations = location.address.split(',')
+    for loc_th in locations:
+        if 'เขต' in loc_th:
+            districts_eng = districts_map[loc_th.strip()]
+            district = session_mysql.query(District).filter(District.name == districts_eng).first()
+            district_id = district.id
+
+    count = 0
+    for i in range(len(cuisine_ids)):
+        r_instance = Restaurant(
+            name=name,
+            latitude=lat,
+            longitude=long,
+            open_time=open_time,
+            close_time=close_time,
+            google_rating=g_rating,
+            tripadvisor_rating=rating,
+            address=address,
+            cuisine_id=cuisine_ids[i],
+            district_id=district_id,
+            michelin_star=0,
+        )
+        session_mysql.add(r_instance)
+        count += 1
+    session_mysql.commit()
+    print(f"Committed {count} restaurants")
+    break
 
 
-# for restaurant in restaurants:
-#     name, rating, cuisines, address, opening_hr = restaurant
-#
-#     new_cuisines = group_cuisine(cuisines)[1]
-#     if new_cuisines:
-#         commit_new_cuisines(new_cuisines)
-#     cuisine_ids = group_cuisine(cuisines)[0]
-#
-#     open_time, close_time = split_time(opening_hr)
-#
-#     for i in range(len(cuisine_ids)):
-#         r_instance = Restaurant(
-#             name=name,
-#             latitude='',
-#             longitude='',
-#             open_time=open_time,
-#             close_time=close_time,
-#             google_rating='',
-#             tripadvisor_rating=rating,
-#             address=address,
-#             cuisine_id=cuisine_ids[i],
-#             district_id='',
-#             michelin_star=0,
-#         )
-
-
-
-# ('Chez Shibata365', 5.0, 'French,Japanese,Thai,Japanese sweets parlour,Japanese Fusion', '27 Soi Sukhumvit 55 Hotel Nikko Thonglor The Ginza Zone Escalator At 3rd Floor, Bangkok 10110 Thailand', '10:00 AM - 9:00 PM')
-
-# print(session_mysql.query(Restaurant))
-# print(session_mysql.query(Cuisine).filter(Cuisine.name == 'Thai').first())
-# print(session_mysql.query(exists().where(Cuisine.name == 'Japanese')).scalar())
-
-# print(group_cuisine('Thai,JJJ'))
 # print(split_time('Closes in 39 min: '))
-
-# cuisines = 'French,Japanese,Thai,Japanese sweets parlour,Japanese Fusion'
-# new_cuisines = group_cuisine(cuisines)[1]
-# old_cuisine_ids = group_cuisine(cuisines)[0]
-# print(old_cuisine_ids)
-# print(new_cuisines)
-# if new_cuisines:
-#     commit_new_cuisines(new_cuisines)
-# cuisine_ids = group_cuisine(cuisines)[0]
-# print(cuisine_ids)
-# print(new_cuisines)
-
-# # works fine
-# r_instance = Restaurant(
-#             name='Test 2',
-#             latitude='0.000000',
-#             longitude='1.000000',
-#             open_time='12.00',
-#             close_time='24.00',
-#             google_rating='2.0',
-#             tripadvisor_rating='3.0',
-#             address='Somewhere',
-#             cuisine_id=1,
-#             district_id=1
-#         )
-#
-# session_mysql.add(r_instance)
-# session_mysql.commit()
