@@ -3,30 +3,19 @@ body {
 }
 
 .form-checkbox {
-  position: absolute;
-  left: 1210px;
-  top: 25px;
   text-align:left;
   background-color: #e6ecff;
   font-size: 19px;
-  width: 220px;
-  height: 250px;
   padding: 50px;
   line-height: 30pt;
 }
 
 .chart {
-  position: absolute;
-  left: 1210px;
-  top: 380px;
   text-align:left;
   background-color: #e6ffe6;
-  width: 200px;
-  height: 200px;
   padding: 30px;
   line-height: 30pt;
 }
-
 
 input[type=button], input[type=submit], input[type=reset] {
   position: relative;
@@ -66,11 +55,6 @@ input[type=button], input[type=submit], input[type=reset] {
 }
 
 #myInput:focus {outline: 3px solid #ddd;}
-
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
 
 .dropdown-content {
   display: none;
@@ -257,3 +241,13 @@ input[type=button], input[type=submit], input[type=reset] {
 .filter-songs-popup-bpm {
   display: none;
 }
+
+.map {
+  position: absolute;
+  left: 200px;
+  top: 25px;
+  text-align:left;
+  width: 220px;
+  height: 250px;
+}
+
