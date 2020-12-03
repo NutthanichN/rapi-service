@@ -8,67 +8,102 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
-<body>
+<!--<style>-->
+<!--body {-->
+<!--  background-color: #e6f5ff;-->
+<!--}-->
+<!--</style>-->
+<!--<style>-->
+<!-- .t1{-->
+<!--    background-color: #FFFFF0;-->
+<!--    width: 250px;-->
+<!--    border: 25px;-->
+<!--    padding: 30px;-->
+<!--  }-->
+
+<!--   .t2{-->
+<!--    background-color: #FFFFF0;-->
+<!--    width: 250px;-->
+<!--    border: 25px;-->
+<!--    padding: 30px;-->
+<!--  }-->
+
+<!--  .padding1{-->
+<!--    position: absolute;-->
+<!--    left: 1400px;-->
+<!--    top: 380px;-->
+<!--    width: 300px;-->
+<!--    height: 350px;-->
+<!--    padding: 30px;-->
+<!--    background-color: #e6ffe6;-->
+<!--  }-->
+
+
+
+<!--</style>-->
+<body style="background-color: #ccf2ff;">
 <!--<div>-->
 <!--  <iframe src="{{url_for('static', filename = 'map')}}" height="600" width="800">-->
 <!--</div>-->
-<div class="dropdown">
-  <button onclick="myFunction()" class="dropbtn">District</button>
-  <div id="myDropdown" class="dropdown-content">
-    <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-    <a href="#bangna">Bangna</a>
-    <a href="#bangruk">Bangruk</a>
-  </div>
-</div>
-
-<div>
-  <input type="text" class="t1" id="time1" placeholder="Start Time">
-</div>
-
-<div>
-  <input type="text" class="t2" id="time2" placeholder="Close Time">
+<div class="map">
+    {% include "map_test.html" %}
 </div>
 
 
-
-<form action="/action_page.php" class="form-checkbox">
-  <input type="checkbox" id="wongnai" name="wongnai" value="Wongnai">
-  <label for="wongnai"> Wongnai </label><br>
-  <input type="checkbox" id="time" name="vehicle2" value="Time">
-  <label for="time"> Time </label><br>
-  <input type="checkbox" id="michelin" name="michelin" value="Michelin">
-  <label for="michelin"> Michelin Star</label><br><br>
-  <input type="submit" value="Submit">
+{% block content %}
+<form action="{{ url_for('index') }}" method="post">
+	<p>District:</p>
+	<p><input type="text" name="nm" style="background-color:  #ffffff; border: 20px; color: black; padding: 5px 20px; text-decoration: none; border-radius: 5em;"/></p>
+	<p><input type="submit" value="submit" style="background-color: #66ffcc;"/></p>
 </form>
+{% endblock %}
 
 
-<canvas id="chart1" class="chart"></canvas>
+<!--<div class="padding1" style="position: absolute; left: 1400px; top: 380px;">-->
+<!--  <input type="text" class="t1" id="time1" placeholder="Start Time">-->
+<!--</div>-->
 
-<div>
-  {% include "map.html" %}
-</div>
+<!--<div style="position: absolute; left: 1430px; top: 600px;">-->
+<!--  <input type="text" class="t2" id="time2" placeholder="Close Time">-->
+<!--</div>-->
 
-<!-- <script>-->
-  <!-- var pieData = [
+
+
+<!--<form class="form-checkbox" style="position: absolute; left: 1400px; top: 5px; width: 320px; height: 350px;">-->
+<!--  <input type="checkbox" id="wongnai" name="wongnai" value="Wongnai">-->
+<!--  <label for="wongnai"> Wongnai </label><br>-->
+<!--  <input type="checkbox" id="time" name="vehicle2" value="Time">-->
+<!--  <label for="time"> Time </label><br>-->
+<!--  <input type="checkbox" id="michelin" name="michelin" value="Michelin">-->
+<!--  <label for="michelin"> Michelin Star</label><br><br>-->
+<!--  <input type="submit" value="Submit">-->
+<!--</form>-->
+
+
+
+<!--<canvas id="chart1" class="chart" style="position: absolute; left: 1400px; top: 380px; width: 300px; height: 350px;"></canvas>-->
+
+<script>
+  var pieData = [
     {% for item, label, colors in set2 %}
       {
         value: {{item}},
         label: "{{label}}",
         color : "{{colors}}"
-      }, -->
+      },
 
-<!--    {% endfor %}-->
-<!--  ];-->
+    {% endfor %}
+   ];
 
-<!--  // get bar chart canvas-->
-<!--  var mychart = document.getElementById("chart1").getContext("2d");-->
-<!--  steps = 10-->
-<!--  max = {{ max }}-->
+// get bar chart canvas
+var mychart = document.getElementById("chart1").getContext("2d");
+steps = 10
+max = {{ max }}
 
-<!--  // draw pie chart-->
-<!--  new Chart(document.getElementById("chart1").getContext("2d")).Pie(pieData);-->
+// draw pie chart
+new Chart(document.getElementById("chart1").getContext("2d")).Pie(pieData);
 
-<!-- </script> -->
+</script>
 
 <!--For wongnai chart-->
 <!--<canvas id="chart3" class="chart"></canvas>-->
@@ -175,30 +210,6 @@
 
 
 
-<script>
-/* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
-function myFunction() {
-  document.getElementById("myDropdown").classList.toggle("show");
-}
-
-function filterFunction() {
-  var input, filter, ul, li, a, i;
-  input = document.getElementById("myInput");
-  filter = input.value.toUpperCase();
-  div = document.getElementById("myDropdown");
-  a = div.getElementsByTagName("a");
-  for (i = 0; i < a.length; i++) {
-    txtValue = a[i].textContent || a[i].innerText;
-    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-      a[i].style.display = "";
-    } else {
-      a[i].style.display = "none";
-    }
-  }
-}
-</script>
-
 
 <script>
 var times = {}; // Added to initialize an object
@@ -216,13 +227,12 @@ timepicker.on('change', function(evt){
   var id = evt.element.id;
   times[id] = value;
   console.clear();
-  console.log(times); 
+  console.log(times);
 });
 </script>
 
-
-
-
 </body>
 </html>
+
+
 
