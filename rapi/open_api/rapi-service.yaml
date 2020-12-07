@@ -46,7 +46,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Restaurant'
-  /restaurants/rating/wongnai/{restaurantId}:
+  /restaurants/rating/google/{restaurantId}:
     parameters:
     - name: restaurantId
       in: path
@@ -54,8 +54,8 @@ paths:
       schema:
         type : integer
     get:
-      summary: Returns rating of the specified restaurant from Wongnai.
-      operationId: controller.get_restaurant_wongnai_rating
+      summary: Returns rating of the specified restaurant from Google.
+      operationId: controller.get_restaurant_google_rating
       responses:
         200:
           description: Success
@@ -171,7 +171,7 @@ components:
           type: string
         opening_hour:
           type: string
-        wongnai_rating:
+        google_rating:
           type: number
           multipleOf: 0.1
         tripadvisor_rating:

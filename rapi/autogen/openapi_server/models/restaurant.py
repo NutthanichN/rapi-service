@@ -15,7 +15,7 @@ class Restaurant(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, name=None, location=None, cuisine_name=None, opening_hour=None, wongnai_rating=None, tripadvisor_rating=None, address=None):  # noqa: E501
+    def __init__(self, id=None, name=None, location=None, cuisine_name=None, opening_hour=None, google_rating=None, tripadvisor_rating=None, address=None):  # noqa: E501
         """Restaurant - a model defined in OpenAPI
 
         :param id: The id of this Restaurant.  # noqa: E501
@@ -28,8 +28,8 @@ class Restaurant(Model):
         :type cuisine_name: str
         :param opening_hour: The opening_hour of this Restaurant.  # noqa: E501
         :type opening_hour: str
-        :param wongnai_rating: The wongnai_rating of this Restaurant.  # noqa: E501
-        :type wongnai_rating: float
+        :param google_rating: The google_rating of this Restaurant.  # noqa: E501
+        :type google_rating: float
         :param tripadvisor_rating: The tripadvisor_rating of this Restaurant.  # noqa: E501
         :type tripadvisor_rating: float
         :param address: The address of this Restaurant.  # noqa: E501
@@ -41,7 +41,7 @@ class Restaurant(Model):
             'location': List[float],
             'cuisine_name': str,
             'opening_hour': str,
-            'wongnai_rating': float,
+            'google_rating': float,
             'tripadvisor_rating': float,
             'address': str
         }
@@ -52,7 +52,7 @@ class Restaurant(Model):
             'location': 'location',
             'cuisine_name': 'cuisine_name',
             'opening_hour': 'opening_hour',
-            'wongnai_rating': 'wongnai_rating',
+            'google_rating': 'google_rating',
             'tripadvisor_rating': 'tripadvisor_rating',
             'address': 'address'
         }
@@ -62,7 +62,7 @@ class Restaurant(Model):
         self._location = location
         self._cuisine_name = cuisine_name
         self._opening_hour = opening_hour
-        self._wongnai_rating = wongnai_rating
+        self._google_rating = google_rating
         self._tripadvisor_rating = tripadvisor_rating
         self._address = address
 
@@ -183,25 +183,25 @@ class Restaurant(Model):
         self._opening_hour = opening_hour
 
     @property
-    def wongnai_rating(self):
-        """Gets the wongnai_rating of this Restaurant.
+    def google_rating(self):
+        """Gets the google_rating of this Restaurant.
 
 
-        :return: The wongnai_rating of this Restaurant.
+        :return: The google_rating of this Restaurant.
         :rtype: float
         """
-        return self._wongnai_rating
+        return self._google_rating
 
-    @wongnai_rating.setter
-    def wongnai_rating(self, wongnai_rating):
-        """Sets the wongnai_rating of this Restaurant.
+    @google_rating.setter
+    def google_rating(self, google_rating):
+        """Sets the google_rating of this Restaurant.
 
 
-        :param wongnai_rating: The wongnai_rating of this Restaurant.
-        :type wongnai_rating: float
+        :param google_rating: The google_rating of this Restaurant.
+        :type google_rating: float
         """
 
-        self._wongnai_rating = wongnai_rating
+        self._google_rating = google_rating
 
     @property
     def tripadvisor_rating(self):

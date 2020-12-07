@@ -1,98 +1,150 @@
-from flask import abort
 from rapi.autogen.openapi_server import models
+from rapi_site.database import db_session
+from flask import abort
+from rapi_site.models import Restaurant, Cuisine, District
 
 
 def get_restaurant():
-    cs = db.cursor()
-    cs.execute("SELECT basin_id,name FROM basin")
-    result = [models.BasinShort(id,name) for id,name in cs.fetchall()]
-    cs.close()
-    return result
+    restaurants = db_session.query(Restaurant, Cuisine).join(Cuisine).filter(Restaurant.cuisine_id == Cuisine.id).all()
+
+    # TODO: update .yaml (wongnai_rating -> google_rating)
+    results = [
+        models.Restaurant(
+            id=r[0].id, name=r[0].name, location=[r[0].latitude, r[0].longitude],
+            cuisine_name=r[1].name, opening_hour=f"{r[0].open_time}-{r[0].close_time}",
+            google_rating=r[0].google_rating,
+            tripadvisor_rating=r[0].tripadvisor_rating,
+            address=r[0].address
+        ) for r in restaurants
+    ]
+    return results
 
 
 def get_restaurant_details(restaurantId):
-    cs = db.cursor()
-    cs.execute("SELECT basin_id,name,area FROM basin WHERE basin_id=%s",[basinId])
-    result = cs.fetchone()
-    cs.close()
-    if result:
-        basin_id,name,area = result
-        return models.BasinFull(basin_id,name,area)
-    else:
-        abort(404)
+    restaurant = db_session.query(Restaurant).filter(Restaurant.id == restaurantId).one()
 
+    print(restaurant)
 
-def get_michelin_restaurant():
-    cs = db.cursor()
-    cs.execute("SELECT station_id,ename FROM station WHERE basin_id=%s",[basinId])
-    result = [models.StationShort(id,name) for id,name in cs.fetchall()]
-    cs.close()
+    # TODO: update .yaml (wongnai_rating -> google_rating)
+    result = models.Restaurant(
+            id=restaurant.id, name=restaurant.name, location=[restaurant.latitude, restaurant.longitude],
+            cuisine_name=restaurant.name, opening_hour=f"{restaurant.open_time}-{restaurant.close_time}",
+            google_rating=restaurant.google_rating,
+            tripadvisor_rating=restaurant.tripadvisor_rating,
+            address=restaurant.address
+        )
     return result
 
 
-def get_restaurant_wongnai_rating(restaurantId):
-    cs = db.cursor()
-    cs.execute("SELECT station_id,basin_id,ename,lat,lon FROM station WHERE station_id=%s",[stationId])
-    result = cs.fetchone()
-    cs.close()
-    if result:
-        station_id,basin_id,ename,lat,lon = result
-        return models.StationFull(station_id,basin_id,ename,lat,lon)
-    else:
-        abort(404)
+print(get_restaurant_details(68))
 
 
-def get_restaurant_tripadvisor_rating(restaurantId):
-    cs = db.cursor()
-    cs.execute("SELECT b.basin_id AS basin_id, r.year AS year, SUM(r.amount) / COUNT(DISTINCT s.station_id) AS rainfall FROM rainfall r INNER JOIN station s ON s.station_id=r.station_id INNER JOIN basin b ON b.basin_id=s.basin_id WHERE b.basin_id=%s and r.year=%s",[basinId,year])
-    result = cs.fetchone()
-    cs.close()
-    if result:
-        basin_id,year,rainfall = result
-        return {
-                    "basin_id": basin_id,
-                    "year": year,
-                    "rainfall": rainfall
-                }
-    else:
-        abort(404)
+# def get_michelin_restaurant():
+#     restaurants = db_session.query(Restaurant).all()
+#
+#     print(restaurants)
+#
+#     # TODO: update .yaml (wongnai_rating -> google_rating)
+#     results = [
+#         models.Restaurant(
+#             id=r[0].id, name=r[0].name
+#         ) for r in restaurants
+#     ]
+#     return results
+#
+#
+# print(get_michelin_restaurant())
 
 
-def get_district():
-    cs = db.cursor()
-    cs.execute("SELECT station_id,ename FROM station WHERE basin_id=%s",[basinId])
-    result = [models.StationShort(id,name) for id,name in cs.fetchall()]
-    cs.close()
-    return result
+# def get_restaurant_google_rating(restaurantId):
+#     restaurant = db_session.query(Restaurant).filter(Restaurant.id == restaurantId).one()
+#
+#     print(restaurant)
+#
+#     # TODO: update .yaml (wongnai_rating -> google_rating)
+#     result = models.Restaurant(
+#             id=restaurant.id, name=restaurant.name,
+#             google_rating=restaurant.google_rating,
+#         )
+#     return result
+#
+#
+# print(get_restaurant_google_rating(68))
 
 
-def get_restaurant_by_district(districtId):
-    cs = db.cursor()
-    cs.execute("SELECT station_id,ename FROM station WHERE basin_id=%s",[basinId])
-    result = [models.StationShort(id,name) for id,name in cs.fetchall()]
-    cs.close()
-    return result
+# def get_restaurant_tripadvisor_rating(restaurantId):
+#     restaurant = db_session.query(Restaurant).filter(Restaurant.id == restaurantId).one()
+#
+#     print(restaurant)
+#
+#     # TODO: update .yaml (wongnai_rating -> google_rating)
+#     result = models.Restaurant(
+#             id=restaurant.id, name=restaurant.name,
+#             tripadvisor_rating=restaurant.tripadvisor_rating,
+#         )
+#     return result
+#
+#
+# print(get_restaurant_tripadvisor_rating(68))
 
 
-def get_cuisine():
-    cs = db.cursor()
-    cs.execute("SELECT station_id,ename FROM station WHERE basin_id=%s",[basinId])
-    result = [models.StationShort(id,name) for id,name in cs.fetchall()]
-    cs.close()
-    return result
+# def get_district():
+#     districts = db_session.query(District).all()
+#
+#     print(districts)
+#
+#     results = [
+#         models.District(
+#             id=d[1].id, name=d[1].name
+#         ) for d in districts
+#     ]
+#     return results
+#
+# print(get_district())
+
+
+# def get_restaurant_by_district(districtId):
+#     district = db_session.query(District, Restaurant).join(Restaurant).filter(Restaurant.district_id == District.Id).filter(District.id == districtId).one()
+#
+#     print(district)
+#
+#     # TODO: update .yaml (wongnai_rating -> google_rating)
+#     result = models.District(
+#         id=district.id, name=district.name,
+#     )
+#     return result
+#
+#
+# print(get_restaurant_by_district(51))
+
+
+# def get_cuisine():
+#     cuisines = db_session.query(Cuisine).all()
+#
+#     # TODO: update .yaml (wongnai_rating -> google_rating)
+#     results = [
+#         models.Cuisine(
+#             id=c[0].id, name=c[0].name
+#         ) for c in cuisines
+#     ]
+#     return results
 
 
 def get_specified_cuisine(cuisineId):
-    cs = db.cursor()
-    cs.execute("SELECT station_id,ename FROM station WHERE basin_id=%s",[basinId])
-    result = [models.StationShort(id,name) for id,name in cs.fetchall()]
-    cs.close()
+    cuisine = db_session.query(Cuisine).filter(Cuisine.id == cuisineId).one()
+
+    # TODO: update .yaml (wongnai_rating -> google_rating)
+    result = models.District(
+        id=cuisine.id, name=cuisine.name,
+    )
     return result
 
 
-def get_specified_cuisine_restaurant(cuisineId):
-    cs = db.cursor()
-    cs.execute("SELECT station_id,ename FROM station WHERE basin_id=%s",[basinId])
-    result = [models.StationShort(id,name) for id,name in cs.fetchall()]
-    cs.close()
-    return result
+# def get_specified_cuisine_restaurant(cuisineId):
+#     cuisine = db_session.query(Cuisine, Restaurant).join(Restaurant).filter(Restaurant.cuisine_id == Cuisine.id).filter(Cuisine.id == cuisineId).one()
+#
+#     # TODO: update .yaml (wongnai_rating -> google_rating)
+#     result = models.District(
+#         id=cuisine.id, name=cuisine.name,
+#     )
+#     return result
