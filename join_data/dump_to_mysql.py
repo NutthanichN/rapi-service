@@ -147,7 +147,7 @@ geolocator = Nominatim(user_agent='rapi-service')
 one_star_restaurants, two_stars_restaurants, three_stars_restaurants = get_michelin_restaurant_names()
 
 # after mapped with lat, long from an api
-engine_lite = create_engine(f"sqlite:///{ROOT_DIR / 'join_data/restaurants_t2_3.sqlite3'}")
+engine_lite = create_engine(f"sqlite:///{ROOT_DIR / 'join_data/restaurants_t2_3_api_all.sqlite3'}")
 connection = engine_lite.connect()
 sql_query = sqlalchemy.text(
     """
