@@ -7,7 +7,6 @@ from rapi_site.models import Restaurant, Cuisine, District
 def get_restaurant():
     restaurants = db_session.query(Restaurant, Cuisine).join(Cuisine).filter(Restaurant.cuisine_id == Cuisine.id).all()
 
-    # TODO: update .yaml (wongnai_rating -> google_rating)
     results = [
         models.Restaurant(
             id=r[0].id, name=r[0].name, location=[r[0].latitude, r[0].longitude],
@@ -22,32 +21,30 @@ def get_restaurant():
 
 def get_restaurant_details(restaurantId):
     restaurant = db_session.query(Restaurant).filter(Restaurant.id == restaurantId).one()
+    cuisine = db_session.query(Cuisine).filter(Cuisine.id == restaurant.cuisine_id).one()
 
-    print(restaurant)
-
-    # TODO: update .yaml (wongnai_rating -> google_rating)
     result = models.Restaurant(
-            id=restaurant.id, name=restaurant.name, location=[restaurant.latitude, restaurant.longitude],
-            cuisine_name=restaurant.name, opening_hour=f"{restaurant.open_time}-{restaurant.close_time}",
-            google_rating=restaurant.google_rating,
-            tripadvisor_rating=restaurant.tripadvisor_rating,
-            address=restaurant.address
-        )
+        id=restaurant.id, name=restaurant.name, location=[restaurant.latitude, restaurant.longitude],
+        cuisine_name=cuisine.name, opening_hour=f"{restaurant.open_time}-{restaurant.close_time}",
+        google_rating=restaurant.google_rating,
+        tripadvisor_rating=restaurant.tripadvisor_rating,
+        address=restaurant.address
+    )
     return result
 
 
-print(get_restaurant_details(68))
-
-
 # def get_michelin_restaurant():
-#     restaurants = db_session.query(Restaurant).all()
+#     restaurants = db_session.query(Restaurant, Cuisine).join(Cuisine).filter(Restaurant.cuisine_id == Cuisine.id).all()
 #
 #     print(restaurants)
 #
-#     # TODO: update .yaml (wongnai_rating -> google_rating)
 #     results = [
 #         models.Restaurant(
-#             id=r[0].id, name=r[0].name
+#             id=r[0].id, name=r[0].name, location=[r[0].latitude, r[0].longitude],
+#             cuisine_name=r[1].name, opening_hour=f"{r[0].open_time}-{r[0].close_time}",
+#             google_rating=r[0].google_rating,
+#             tripadvisor_rating=r[0].tripadvisor_rating,
+#             address=r[0].address
 #         ) for r in restaurants
 #     ]
 #     return results
@@ -56,36 +53,32 @@ print(get_restaurant_details(68))
 # print(get_michelin_restaurant())
 
 
-# def get_restaurant_google_rating(restaurantId):
-#     restaurant = db_session.query(Restaurant).filter(Restaurant.id == restaurantId).one()
-#
-#     print(restaurant)
-#
-#     # TODO: update .yaml (wongnai_rating -> google_rating)
-#     result = models.Restaurant(
-#             id=restaurant.id, name=restaurant.name,
-#             google_rating=restaurant.google_rating,
-#         )
-#     return result
-#
-#
-# print(get_restaurant_google_rating(68))
+def get_restaurant_google_rating(restaurantId):
+    restaurant = db_session.query(Restaurant).filter(Restaurant.id == restaurantId).one()
+    cuisine = db_session.query(Cuisine).filter(Cuisine.id == restaurant.cuisine_id).one()
+
+    result = models.Restaurant(
+        id=restaurant.id, name=restaurant.name, location=[restaurant.latitude, restaurant.longitude],
+        cuisine_name=cuisine.name, opening_hour=f"{restaurant.open_time}-{restaurant.close_time}",
+        google_rating=restaurant.google_rating,
+        tripadvisor_rating=restaurant.tripadvisor_rating,
+        address=restaurant.address
+    )
+    return result.google_rating
 
 
-# def get_restaurant_tripadvisor_rating(restaurantId):
-#     restaurant = db_session.query(Restaurant).filter(Restaurant.id == restaurantId).one()
-#
-#     print(restaurant)
-#
-#     # TODO: update .yaml (wongnai_rating -> google_rating)
-#     result = models.Restaurant(
-#             id=restaurant.id, name=restaurant.name,
-#             tripadvisor_rating=restaurant.tripadvisor_rating,
-#         )
-#     return result
-#
-#
-# print(get_restaurant_tripadvisor_rating(68))
+def get_restaurant_tripadvisor_rating(restaurantId):
+    restaurant = db_session.query(Restaurant).filter(Restaurant.id == restaurantId).one()
+    cuisine = db_session.query(Cuisine).filter(Cuisine.id == restaurant.cuisine_id).one()
+
+    result = models.Restaurant(
+        id=restaurant.id, name=restaurant.name, location=[restaurant.latitude, restaurant.longitude],
+        cuisine_name=cuisine.name, opening_hour=f"{restaurant.open_time}-{restaurant.close_time}",
+        google_rating=restaurant.google_rating,
+        tripadvisor_rating=restaurant.tripadvisor_rating,
+        address=restaurant.address
+    )
+    return result.tripadvisor_rating
 
 
 # def get_district():
@@ -134,7 +127,7 @@ def get_specified_cuisine(cuisineId):
     cuisine = db_session.query(Cuisine).filter(Cuisine.id == cuisineId).one()
 
     # TODO: update .yaml (wongnai_rating -> google_rating)
-    result = models.District(
+    result = models.Cuisine(
         id=cuisine.id, name=cuisine.name,
     )
     return result
