@@ -10,7 +10,7 @@ paths:
   /restaurants:
     get:
       summary: Returns an array of restaurant object.
-      operationId: controller.get_restaurant
+      operationId: rapi.controller.get_restaurants
       responses:
         200:
           description: Success
@@ -29,7 +29,7 @@ paths:
         type : integer
     get:
       summary: Returns complete details of the specified restaurant.
-      operationId: controller.get_restaurant_details
+      operationId: rapi.controller.get_restaurant_details
       responses:
         200:
           description: Success
@@ -42,7 +42,7 @@ paths:
   /restaurants/michelin:
     get:
       summary: Returns a restaurant which receives Michelin Star.
-      operationId: controller.get_michelin_restaurants
+      operationId: rapi.controller.get_michelin_restaurants
       responses:
         200:
           description: Success
@@ -61,7 +61,7 @@ paths:
         type : integer
     get:
       summary: Returns rating of the specified restaurant from Google.
-      operationId: controller.get_restaurant_google_rating
+      operationId: rapi.controller.get_restaurant_google_rating
       responses:
         200:
           description: Success
@@ -80,7 +80,7 @@ paths:
         type : integer
     get:
       summary: Returns rating of the specified restaurant from Tripadvisor.
-      operationId: controller.get_restaurant_tripadvisor_rating
+      operationId: rapi.controller.get_restaurant_tripadvisor_rating
       responses:
         200:
           description: Success
@@ -93,7 +93,7 @@ paths:
   /districts:
     get:
       summary: Returns an array of district object.
-      operationId: controller.get_district
+      operationId: rapi.controller.get_districts
       responses:
         200:
           description: Success
@@ -112,7 +112,7 @@ paths:
         type : integer
     get:
       summary: Returns a district object with the specified ID
-      operationId: controller.get_district_by_id
+      operationId: rapi.controller.get_district_by_id
       responses:
         200:
           description: Success
@@ -131,7 +131,7 @@ paths:
         type : integer
     get:
       summary: Returns all restaurants with the specified district.
-      operationId: controller.get_restaurant_by_district
+      operationId: rapi.controller.get_restaurants_by_district
       responses:
         200:
           description: Success
@@ -146,7 +146,7 @@ paths:
   /cuisines:
     get:
       summary: Returns an array of cuisine object.
-      operationId: controller.get_cuisine
+      operationId: rapi.controller.get_cuisines
       responses:
         200:
           description: Success
@@ -165,7 +165,7 @@ paths:
         type : integer
     get:
       summary: Returns the specified cuisine.
-      operationId: controller.get_specified_cuisine
+      operationId: rapi.controller.get_cuisine_by_id
       responses:
         200:
           description: Success
@@ -184,7 +184,7 @@ paths:
         type : integer
     get:
       summary: Returns the array of restaurants with the specified cuisine.
-      operationId: controller.get_specified_cuisine_restaurant
+      operationId: rapi.controller.get_restaurants_by_cuisine
       responses:
         200:
           description: Success
@@ -220,6 +220,8 @@ components:
         tripadvisor_rating:
           type: number
           multipleOf: 0.1
+        michelin_star:
+          type: integer
         address:
           type: string
     District:
