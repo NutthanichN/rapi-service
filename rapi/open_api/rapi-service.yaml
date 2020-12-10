@@ -2,12 +2,12 @@ openapi: 3.0.0
 info:
   title: Restaurant API Service
   description:
-    This Restaurant API service provides information about restaurants in Bangkok. This information includes basic information of restaurants and received ratings from Michelin Guide, wongnai.com and tripadvisor.com.
+    Restaurant API service that provides information about restaurants in Bangkok.
   version: 1.0.0
 servers:
-- url: /restaurant-api/
+- url: /rapi/
 paths:
-  /restaurants/:
+  /restaurants:
     get:
       summary: Returns an array of restaurant object.
       operationId: controller.get_restaurant
@@ -17,7 +17,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Restaurant'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Restaurant'
   /restaurants/{restaurantId}:
     parameters:
     - name: restaurantId
@@ -35,17 +37,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Restaurant'
+        404:
+          description: No existing restaurant with the specified ID
   /restaurants/michelin:
     get:
       summary: Returns a restaurant which receives Michelin Star.
-      operationId: controller.get_michelin_restaurant
+      operationId: controller.get_michelin_restaurants
       responses:
         200:
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Restaurant'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Restaurant'
   /restaurants/rating/google/{restaurantId}:
     parameters:
     - name: restaurantId
@@ -62,7 +68,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Restaurant'
+                type: integer
+        404:
+          description: No existing restaurant with the specified ID
   /restaurants/rating/tripadvisor/{restaurantId}:
     parameters:
     - name: restaurantId
@@ -79,8 +87,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Restaurant'
-  /districts/:
+                type: integer
+        404:
+          description: No existing restaurant with the specified ID
+  /districts:
     get:
       summary: Returns an array of district object.
       operationId: controller.get_district
@@ -90,8 +100,29 @@ paths:
           content:
             application/json:
               schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/District'
+  /districts/{districtId}:
+    parameters:
+    - name: districtId
+      in: path
+      required: true
+      schema:
+        type : integer
+    get:
+      summary: Returns a district object with the specified ID
+      operationId: controller.get_district_by_id
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
                 $ref: '#/components/schemas/District'
-  /districts/{districtId}/restaurants/:
+        404:
+          description: No existing district with the specified ID
+  /districts/{districtId}/restaurants:
     parameters:
     - name: districtId
       in: path
@@ -107,8 +138,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/District'
-  /cuisines/:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Restaurant'
+        404:
+          description: No existing restaurants that are located in the specified district.
+  /cuisines:
     get:
       summary: Returns an array of cuisine object.
       operationId: controller.get_cuisine
@@ -118,7 +153,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Cuisine'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cuisine'
   /cuisines/{cuisineId}:
     parameters:
     - name: cuisineId
@@ -136,7 +173,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Cuisine'
-  /cuisines/{cuisineId}/restaurants/:
+        404:
+          description: No existing cuisine with the specified ID
+  /cuisines/{cuisineId}/restaurants:
     parameters:
     - name: cuisineId
       in: path
@@ -152,7 +191,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Cuisine'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Restaurant'
+        404:
+          description: No existing restaurants that have cuisine with the specified ID
 components:
   schemas:
     Restaurant:
