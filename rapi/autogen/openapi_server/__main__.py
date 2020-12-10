@@ -2,7 +2,7 @@
 
 import connexion
 
-from openapi_server import encoder
+from rapi.autogen.openapi_server import encoder
 
 
 def main():

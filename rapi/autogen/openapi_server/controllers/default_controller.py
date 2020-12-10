@@ -1,10 +1,10 @@
 import connexion
 import six
 
-from openapi_server.models.cuisine import Cuisine  # noqa: E501
-from openapi_server.models.district import District  # noqa: E501
-from openapi_server.models.restaurant import Restaurant  # noqa: E501
-from openapi_server import util
+from rapi.autogen.openapi_server.models.cuisine import Cuisine  # noqa: E501
+from rapi.autogen.openapi_server.models.district import District  # noqa: E501
+from rapi.autogen.openapi_server.models.restaurant import Restaurant  # noqa: E501
+from rapi.autogen.openapi_server import util
 
 
 def rapi_controller_get_cuisine_by_id(cuisine_id):  # noqa: E501

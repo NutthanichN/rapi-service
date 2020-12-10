@@ -6,10 +6,10 @@ import unittest
 from flask import json
 from six import BytesIO
 
-from openapi_server.models.cuisine import Cuisine  # noqa: E501
-from openapi_server.models.district import District  # noqa: E501
-from openapi_server.models.restaurant import Restaurant  # noqa: E501
-from openapi_server.test import BaseTestCase
+from rapi.autogen.openapi_server.models.cuisine import Cuisine  # noqa: E501
+from rapi.autogen.openapi_server.models.district import District  # noqa: E501
+from rapi.autogen.openapi_server.models.restaurant import Restaurant  # noqa: E501
+from rapi.autogen.openapi_server.test import BaseTestCase
 
 
 class TestDefaultController(BaseTestCase):
