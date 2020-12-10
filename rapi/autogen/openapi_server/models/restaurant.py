@@ -5,8 +5,8 @@ from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
-from rapi.autogen.openapi_server.models.base_model_ import Model
-from rapi.autogen.openapi_server import util
+from openapi_server.models.base_model_ import Model
+from openapi_server import util
 
 
 class Restaurant(Model):
@@ -15,7 +15,7 @@ class Restaurant(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id=None, name=None, location=None, cuisine_name=None, opening_hour=None, google_rating=None, tripadvisor_rating=None, address=None):  # noqa: E501
+    def __init__(self, id=None, name=None, location=None, cuisine_name=None, opening_hour=None, google_rating=None, tripadvisor_rating=None, michelin_star=None, address=None):  # noqa: E501
         """Restaurant - a model defined in OpenAPI
 
         :param id: The id of this Restaurant.  # noqa: E501
@@ -32,6 +32,8 @@ class Restaurant(Model):
         :type google_rating: float
         :param tripadvisor_rating: The tripadvisor_rating of this Restaurant.  # noqa: E501
         :type tripadvisor_rating: float
+        :param michelin_star: The michelin_star of this Restaurant.  # noqa: E501
+        :type michelin_star: int
         :param address: The address of this Restaurant.  # noqa: E501
         :type address: str
         """
@@ -43,6 +45,7 @@ class Restaurant(Model):
             'opening_hour': str,
             'google_rating': float,
             'tripadvisor_rating': float,
+            'michelin_star': int,
             'address': str
         }
 
@@ -54,6 +57,7 @@ class Restaurant(Model):
             'opening_hour': 'opening_hour',
             'google_rating': 'google_rating',
             'tripadvisor_rating': 'tripadvisor_rating',
+            'michelin_star': 'michelin_star',
             'address': 'address'
         }
 
@@ -64,6 +68,7 @@ class Restaurant(Model):
         self._opening_hour = opening_hour
         self._google_rating = google_rating
         self._tripadvisor_rating = tripadvisor_rating
+        self._michelin_star = michelin_star
         self._address = address
 
     @classmethod
@@ -223,6 +228,27 @@ class Restaurant(Model):
         """
 
         self._tripadvisor_rating = tripadvisor_rating
+
+    @property
+    def michelin_star(self):
+        """Gets the michelin_star of this Restaurant.
+
+
+        :return: The michelin_star of this Restaurant.
+        :rtype: int
+        """
+        return self._michelin_star
+
+    @michelin_star.setter
+    def michelin_star(self, michelin_star):
+        """Sets the michelin_star of this Restaurant.
+
+
+        :param michelin_star: The michelin_star of this Restaurant.
+        :type michelin_star: int
+        """
+
+        self._michelin_star = michelin_star
 
     @property
     def address(self):

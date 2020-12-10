@@ -9,7 +9,7 @@ servers:
 paths:
   /cuisines:
     get:
-      operationId: controller_get_cuisine
+      operationId: rapi_controller_get_cuisines
       responses:
         "200":
           content:
@@ -23,7 +23,7 @@ paths:
       x-openapi-router-controller: openapi_server.controllers.default_controller
   /cuisines/{cuisineId}:
     get:
-      operationId: controller_get_specified_cuisine
+      operationId: rapi_controller_get_cuisine_by_id
       parameters:
       - explode: false
         in: path
@@ -45,7 +45,7 @@ paths:
       x-openapi-router-controller: openapi_server.controllers.default_controller
   /cuisines/{cuisineId}/restaurants:
     get:
-      operationId: controller_get_specified_cuisine_restaurant
+      operationId: rapi_controller_get_restaurants_by_cuisine
       parameters:
       - explode: false
         in: path
@@ -70,7 +70,7 @@ paths:
       x-openapi-router-controller: openapi_server.controllers.default_controller
   /districts:
     get:
-      operationId: controller_get_district
+      operationId: rapi_controller_get_districts
       responses:
         "200":
           content:
@@ -84,7 +84,7 @@ paths:
       x-openapi-router-controller: openapi_server.controllers.default_controller
   /districts/{districtId}:
     get:
-      operationId: controller_get_district_by_id
+      operationId: rapi_controller_get_district_by_id
       parameters:
       - explode: false
         in: path
@@ -106,7 +106,7 @@ paths:
       x-openapi-router-controller: openapi_server.controllers.default_controller
   /districts/{districtId}/restaurants:
     get:
-      operationId: controller_get_restaurant_by_district
+      operationId: rapi_controller_get_restaurants_by_district
       parameters:
       - explode: false
         in: path
@@ -130,7 +130,7 @@ paths:
       x-openapi-router-controller: openapi_server.controllers.default_controller
   /restaurants:
     get:
-      operationId: controller_get_restaurant
+      operationId: rapi_controller_get_restaurants
       responses:
         "200":
           content:
@@ -144,7 +144,7 @@ paths:
       x-openapi-router-controller: openapi_server.controllers.default_controller
   /restaurants/michelin:
     get:
-      operationId: controller_get_michelin_restaurants
+      operationId: rapi_controller_get_michelin_restaurants
       responses:
         "200":
           content:
@@ -158,7 +158,7 @@ paths:
       x-openapi-router-controller: openapi_server.controllers.default_controller
   /restaurants/rating/google/{restaurantId}:
     get:
-      operationId: controller_get_restaurant_google_rating
+      operationId: rapi_controller_get_restaurant_google_rating
       parameters:
       - explode: false
         in: path
@@ -180,7 +180,7 @@ paths:
       x-openapi-router-controller: openapi_server.controllers.default_controller
   /restaurants/rating/tripadvisor/{restaurantId}:
     get:
-      operationId: controller_get_restaurant_tripadvisor_rating
+      operationId: rapi_controller_get_restaurant_tripadvisor_rating
       parameters:
       - explode: false
         in: path
@@ -202,7 +202,7 @@ paths:
       x-openapi-router-controller: openapi_server.controllers.default_controller
   /restaurants/{restaurantId}:
     get:
-      operationId: controller_get_restaurant_details
+      operationId: rapi_controller_get_restaurant_details
       parameters:
       - explode: false
         in: path
@@ -228,6 +228,7 @@ components:
       example:
         cuisine_name: cuisine_name
         address: address
+        michelin_star: 5
         opening_hour: opening_hour
         name: name
         location:
@@ -256,6 +257,8 @@ components:
         tripadvisor_rating:
           multipleOf: 0.1
           type: number
+        michelin_star:
+          type: integer
         address:
           type: string
       type: object
