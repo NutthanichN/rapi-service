@@ -21,13 +21,13 @@ python3 -m openapi_server
 and open your browser to here:
 
 ```
-http://localhost:8080/restaurant-api/ui/
+http://localhost:8080/rapi/ui/
 ```
 
 Your OpenAPI definition lives here:
 
 ```
-http://localhost:8080/restaurant-api/openapi.json
+http://localhost:8080/rapi/openapi.json
 ```
 
 To launch the integration tests, use tox:

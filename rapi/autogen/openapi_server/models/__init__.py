@@ -1,3 +1,8 @@
-from .cuisine import Cuisine
-from .district import District
-from .restaurant import Restaurant
+# coding: utf-8
+
+# flake8: noqa
+from __future__ import absolute_import
+# import models into model package
+from openapi_server.models.cuisine import Cuisine
+from openapi_server.models.district import District
+from openapi_server.models.restaurant import Restaurant

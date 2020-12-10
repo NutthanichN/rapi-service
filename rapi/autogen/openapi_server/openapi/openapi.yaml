@@ -1,0 +1,281 @@
+openapi: 3.0.0
+info:
+  description: Restaurant API service that provides information about restaurants
+    in Bangkok.
+  title: Restaurant API Service
+  version: 1.0.0
+servers:
+- url: /rapi/
+paths:
+  /cuisines:
+    get:
+      operationId: controller_get_cuisine
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Cuisine'
+                type: array
+          description: Success
+      summary: Returns an array of cuisine object.
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /cuisines/{cuisineId}:
+    get:
+      operationId: controller_get_specified_cuisine
+      parameters:
+      - explode: false
+        in: path
+        name: cuisineId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cuisine'
+          description: Success
+        "404":
+          description: No existing cuisine with the specified ID
+      summary: Returns the specified cuisine.
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /cuisines/{cuisineId}/restaurants:
+    get:
+      operationId: controller_get_specified_cuisine_restaurant
+      parameters:
+      - explode: false
+        in: path
+        name: cuisineId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Restaurant'
+                type: array
+          description: Success
+        "404":
+          description: No existing restaurants that have cuisine with the specified
+            ID
+      summary: Returns the array of restaurants with the specified cuisine.
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /districts:
+    get:
+      operationId: controller_get_district
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/District'
+                type: array
+          description: Success
+      summary: Returns an array of district object.
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /districts/{districtId}:
+    get:
+      operationId: controller_get_district_by_id
+      parameters:
+      - explode: false
+        in: path
+        name: districtId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/District'
+          description: Success
+        "404":
+          description: No existing district with the specified ID
+      summary: Returns a district object with the specified ID
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /districts/{districtId}/restaurants:
+    get:
+      operationId: controller_get_restaurant_by_district
+      parameters:
+      - explode: false
+        in: path
+        name: districtId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Restaurant'
+                type: array
+          description: Success
+        "404":
+          description: No existing restaurants that are located in the specified district.
+      summary: Returns all restaurants with the specified district.
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /restaurants:
+    get:
+      operationId: controller_get_restaurant
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Restaurant'
+                type: array
+          description: Success
+      summary: Returns an array of restaurant object.
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /restaurants/michelin:
+    get:
+      operationId: controller_get_michelin_restaurants
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Restaurant'
+                type: array
+          description: Success
+      summary: Returns a restaurant which receives Michelin Star.
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /restaurants/rating/google/{restaurantId}:
+    get:
+      operationId: controller_get_restaurant_google_rating
+      parameters:
+      - explode: false
+        in: path
+        name: restaurantId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: integer
+          description: Success
+        "404":
+          description: No existing restaurant with the specified ID
+      summary: Returns rating of the specified restaurant from Google.
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /restaurants/rating/tripadvisor/{restaurantId}:
+    get:
+      operationId: controller_get_restaurant_tripadvisor_rating
+      parameters:
+      - explode: false
+        in: path
+        name: restaurantId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: integer
+          description: Success
+        "404":
+          description: No existing restaurant with the specified ID
+      summary: Returns rating of the specified restaurant from Tripadvisor.
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /restaurants/{restaurantId}:
+    get:
+      operationId: controller_get_restaurant_details
+      parameters:
+      - explode: false
+        in: path
+        name: restaurantId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+          description: Success
+        "404":
+          description: No existing restaurant with the specified ID
+      summary: Returns complete details of the specified restaurant.
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+components:
+  schemas:
+    Restaurant:
+      example:
+        cuisine_name: cuisine_name
+        address: address
+        opening_hour: opening_hour
+        name: name
+        location:
+        - 6.027456183070403
+        - 6.027456183070403
+        id: 0
+        google_rating: 1.4658129805029452
+        tripadvisor_rating: 5.962133916683182
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        location:
+          items:
+            multipleOf: 0.0000010
+            type: number
+          type: array
+        cuisine_name:
+          type: string
+        opening_hour:
+          type: string
+        google_rating:
+          multipleOf: 0.1
+          type: number
+        tripadvisor_rating:
+          multipleOf: 0.1
+          type: number
+        address:
+          type: string
+      type: object
+    District:
+      example:
+        name: name
+        id: 0
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+      type: object
+    Cuisine:
+      example:
+        name: name
+        id: 0
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+      type: object

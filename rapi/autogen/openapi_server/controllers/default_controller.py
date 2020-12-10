@@ -13,7 +13,7 @@ def controller_get_cuisine():  # noqa: E501
      # noqa: E501
 
 
-    :rtype: Cuisine
+    :rtype: List[Cuisine]
     """
     return 'do some magic!'
 
@@ -24,18 +24,31 @@ def controller_get_district():  # noqa: E501
      # noqa: E501
 
 
+    :rtype: List[District]
+    """
+    return 'do some magic!'
+
+
+def controller_get_district_by_id(district_id):  # noqa: E501
+    """Returns a district object with the specified ID
+
+     # noqa: E501
+
+    :param district_id: 
+    :type district_id: int
+
     :rtype: District
     """
     return 'do some magic!'
 
 
-def controller_get_michelin_restaurant():  # noqa: E501
+def controller_get_michelin_restaurants():  # noqa: E501
     """Returns a restaurant which receives Michelin Star.
 
      # noqa: E501
 
 
-    :rtype: Restaurant
+    :rtype: List[Restaurant]
     """
     return 'do some magic!'
 
@@ -46,7 +59,7 @@ def controller_get_restaurant():  # noqa: E501
      # noqa: E501
 
 
-    :rtype: Restaurant
+    :rtype: List[Restaurant]
     """
     return 'do some magic!'
 
@@ -59,7 +72,7 @@ def controller_get_restaurant_by_district(district_id):  # noqa: E501
     :param district_id: 
     :type district_id: int
 
-    :rtype: District
+    :rtype: List[Restaurant]
     """
     return 'do some magic!'
 
@@ -77,6 +90,19 @@ def controller_get_restaurant_details(restaurant_id):  # noqa: E501
     return 'do some magic!'
 
 
+def controller_get_restaurant_google_rating(restaurant_id):  # noqa: E501
+    """Returns rating of the specified restaurant from Google.
+
+     # noqa: E501
+
+    :param restaurant_id: 
+    :type restaurant_id: int
+
+    :rtype: int
+    """
+    return 'do some magic!'
+
+
 def controller_get_restaurant_tripadvisor_rating(restaurant_id):  # noqa: E501
     """Returns rating of the specified restaurant from Tripadvisor.
 
@@ -85,20 +111,7 @@ def controller_get_restaurant_tripadvisor_rating(restaurant_id):  # noqa: E501
     :param restaurant_id: 
     :type restaurant_id: int
 
-    :rtype: Restaurant
-    """
-    return 'do some magic!'
-
-
-def controller_get_restaurant_wongnai_rating(restaurant_id):  # noqa: E501
-    """Returns rating of the specified restaurant from Wongnai.
-
-     # noqa: E501
-
-    :param restaurant_id: 
-    :type restaurant_id: int
-
-    :rtype: Restaurant
+    :rtype: int
     """
     return 'do some magic!'
 
@@ -124,6 +137,6 @@ def controller_get_specified_cuisine_restaurant(cuisine_id):  # noqa: E501
     :param cuisine_id: 
     :type cuisine_id: int
 
-    :rtype: Cuisine
+    :rtype: List[Restaurant]
     """
     return 'do some magic!'

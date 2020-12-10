@@ -3,7 +3,7 @@ import pprint
 import six
 import typing
 
-from openapi_server import util
+from rapi.autogen.openapi_server import util
 
 T = typing.TypeVar('T')
 
