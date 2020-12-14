@@ -23,7 +23,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_e069da179d8b4656bed6b9f21c053a27 {
+                #map_d5f11f845a454842bcde9c4720527f72 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -32,20 +32,23 @@
                 }
             </style>
         
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css"/>
 </head>
 <body>    
     
-            <div class="folium-map" id="map_e069da179d8b4656bed6b9f21c053a27" ></div>
+            <div class="folium-map" id="map_d5f11f845a454842bcde9c4720527f72" ></div>
         
 </body>
 <script>    
     
-            var map_e069da179d8b4656bed6b9f21c053a27 = L.map(
-                "map_e069da179d8b4656bed6b9f21c053a27",
+            var map_d5f11f845a454842bcde9c4720527f72 = L.map(
+                "map_d5f11f845a454842bcde9c4720527f72",
                 {
-                    center: [7.1898, 100.5954],
+                    center: [13.7500014, 100.5428021],
                     crs: L.CRS.EPSG3857,
-                    zoom: 14,
+                    zoom: 20,
                     zoomControl: true,
                     preferCanvas: false,
                 }
@@ -55,9 +58,40 @@
 
         
     
-            var tile_layer_1791dce5bc9647f88a48994da90a955d = L.tileLayer(
+            var tile_layer_7ce7216c72114cf89c5b4424176a4cc8 = L.tileLayer(
                 "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
-            ).addTo(map_e069da179d8b4656bed6b9f21c053a27);
+            ).addTo(map_d5f11f845a454842bcde9c4720527f72);
         
+    
+            var marker_cluster_5e81fba505684bd29d325b5ff7e3550b = L.markerClusterGroup(
+                {}
+            );
+            map_d5f11f845a454842bcde9c4720527f72.addLayer(marker_cluster_5e81fba505684bd29d325b5ff7e3550b);
+        
+    
+            var marker_75625d4e6f8e449f80ebb2dc05394b12 = L.marker(
+                [13.7500014, 100.5428021],
+                {}
+            ).addTo(marker_cluster_5e81fba505684bd29d325b5ff7e3550b);
+        
+    
+            var icon_894fcf6329c4457d8b06a1ecc7aad084 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_75625d4e6f8e449f80ebb2dc05394b12.setIcon(icon_894fcf6329c4457d8b06a1ecc7aad084);
+        
+    
+        var popup_ad471bcae25e4aec8184622f47ca541a = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_219f4fa5af3b4d59bba619861865a4aa = $(`<div id="html_219f4fa5af3b4d59bba619861865a4aa" style="width: 100.0%; height: 100.0%;">             Name: The Berkeley Dining Room             Adress: 559 Ratprarop Rd The Berkeley Hotel Pratunam, Makkasan, Rachatewi, Bangkok 10400 Thailand              Tripadvisor rating: 5.0              Google rating: 4.3              Michelin Star: 0              Cuisines: Thai,International             Open hours: 06.00 - 22.00         </div>`)[0];
+            popup_ad471bcae25e4aec8184622f47ca541a.setContent(html_219f4fa5af3b4d59bba619861865a4aa);
+        
+
+        marker_75625d4e6f8e449f80ebb2dc05394b12.bindPopup(popup_ad471bcae25e4aec8184622f47ca541a)
+        ;
+
+        
+    
 </script>
