@@ -1,238 +1,329 @@
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+<!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.js"></script>
 <link href="https://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.css" rel="stylesheet"/>
 <link href='https://fonts.googleapis.com/css?family=Nunito' rel='stylesheet'>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<!--<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">-->
 </head>
 
-<!--<style>-->
-<!--body {-->
-<!--  background-color: #e6f5ff;-->
+<style>
+.dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  width: 180px;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #3e8e41;
+  width: 180px;
+}
+
+#myInput {
+  box-sizing: border-box;
+  background-image: url('searchicon.png');
+<!--  background-position: 14px 12px;-->
+<!--  background-repeat: no-repeat;-->
+  font-size: 16px;
+  padding: 14px 20px 12px 45px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  width: 180px;
+}
+
+#myInput:focus {outline: 3px solid #ddd;}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  width: 180px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f6f6f6;
+  width: 180px;
+  overflow: auto;
+<!--  border: 1px solid #ddd;-->
+<!--  z-index: 1;-->
+}
+
+.dropdown-district{
+  width: 180px;
+  padding: 6px 2px;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 6px 8px;
+  text-decoration: none;
+  display: block;
+  width: 180px;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+.show {display: block;}
+
+input[type=button], input[type=submit], input[type=reset] {
+  position: relative;
+  background-color:  #00e673;
+  border: none;
+  color: black;
+  padding: 6px 8px;
+  text-decoration: none;
+  margin: 0 auto;
+  display: block;
+}
+
+<!--.chart {-->
+<!--  position: relative;-->
+<!--  text-align:left;-->
+<!--  background-color: #ddddbb;-->
+<!--  padding: 30px;-->
+<!--  line-height: 30pt;-->
+<!--  opacity:0.9;-->
+<!--  width: 200px;-->
+<!--  height: 500px;-->
+
 <!--}-->
-<!--</style>-->
-<!--<style>-->
-<!-- .t1{-->
-<!--    background-color: #FFFFF0;-->
-<!--    width: 250px;-->
-<!--    border: 25px;-->
-<!--    padding: 30px;-->
-<!--  }-->
+.box-filter {
+  text-align:left;
+  background-color:  #e6f9ff;
+  opacity:0.9;
+}
 
-<!--   .t2{-->
-<!--    background-color: #FFFFF0;-->
-<!--    width: 250px;-->
-<!--    border: 25px;-->
-<!--    padding: 30px;-->
-<!--  }-->
+.box-detail {
+  text-align:left;
+  background-color:  #e6e6ff;
+}
 
-<!--  .padding1{-->
-<!--    position: absolute;-->
-<!--    left: 1400px;-->
-<!--    top: 380px;-->
-<!--    width: 300px;-->
-<!--    height: 350px;-->
-<!--    padding: 30px;-->
-<!--    background-color: #e6ffe6;-->
-<!--  }-->
+</style>
+<body>
+<div class="map" style="opacity:0.55;">
+    {% include "map.html" %}
+</div>
 
+<form  action="{{ url_for('index') }}" method="post">
+  <div class="dropdown" style="position: absolute; top: 8px; left: 50px">
+        <select id="district" class="dropdown-district" name="district-name">
+          <option value="bangkok" name="bangkok" selected>Bangkok</option>
+          {% for dis in dis_all %}
+            <option value="{{dis}}" name="{{dis}}">{{dis}}</option>
+          {% endfor %}
+        </select>
+  </div>
+  <div  class="box-filter" style="position: absolute; left: 13px; top: 80px;">
+    <label for="cuisine">Cuisine:</label>
+    <input type="text" id="cuisine" name="cuisine" value="{{pre_cuisine}}"><br><br>
+    <label for="trip-ad">Tripdavisor rating (0-5):</label>
+    <input type="text" id="trip-ad" name="trip-ad" value="{{pre_trip_ad}}"><br><br>
+    <label for="google">Google rating (0-5):</label>
+    <input type="text" id="google" name="google" value="{{pre_google}}"><br><br>
+    <label for="michelin">Michelin star (0-5):</label>
+    <input type="text" id="michelin" name="michelin" value="{{pre_michelin}}"><br><br>
+    <label for="open">Open time (example 06.00):</label>
+    <input type="text" id="open" name="open" value={{pre_open}}><br><br>
+    <input type="submit" value="Submit">
+  </div>
+</form>
 
-
-<!--</style>-->
-<body style="background-color: #ccf2ff;">
-<!--<div>-->
-<!--  <iframe src="{{url_for('static', filename = 'map')}}" height="600" width="800">-->
-<!--</div>-->
-<div class="map">
-    {% include "map_test.html" %}
+<div class = "box-detail" style="position: absolute; left: 13px; top: 350px;">
+  <p style="font-weight: bold; font-size: 150%">{{pre_district}}</p>
+  <p>Cusine: {{pre_cuisine}}</p>
+  <p>Trip advisor rating: {{pre_trip_ad}}</p>
+  <p>Google rating: {{pre_google}}</p>
+  <p>Michelin star: {{pre_michelin}}</p>
+  <p>Open time: {{pre_open}}</p>
+  <p>Number of restaurants: {{number_restautant}}</p>
 </div>
 
 
-{% block content %}
-<form action="{{ url_for('index') }}" method="post">
-	<p>District:</p>
-	<p><input type="text" name="nm" style="background-color:  #ffffff; border: 20px; color: black; padding: 5px 20px; text-decoration: none; border-radius: 5em;"/></p>
-	<p><input type="submit" value="submit" style="background-color: #66ffcc;"/></p>
-</form>
-{% endblock %}
-
-
-<!--<div class="padding1" style="position: absolute; left: 1400px; top: 380px;">-->
-<!--  <input type="text" class="t1" id="time1" placeholder="Start Time">-->
-<!--</div>-->
-
-<!--<div style="position: absolute; left: 1430px; top: 600px;">-->
-<!--  <input type="text" class="t2" id="time2" placeholder="Close Time">-->
-<!--</div>-->
-
-
-
-<!--<form class="form-checkbox" style="position: absolute; left: 1400px; top: 5px; width: 320px; height: 350px;">-->
-<!--  <input type="checkbox" id="wongnai" name="wongnai" value="Wongnai">-->
-<!--  <label for="wongnai"> Wongnai </label><br>-->
-<!--  <input type="checkbox" id="time" name="vehicle2" value="Time">-->
-<!--  <label for="time"> Time </label><br>-->
-<!--  <input type="checkbox" id="michelin" name="michelin" value="Michelin">-->
-<!--  <label for="michelin"> Michelin Star</label><br><br>-->
-<!--  <input type="submit" value="Submit">-->
-<!--</form>-->
-
-
-
-<!--<canvas id="chart1" class="chart" style="position: absolute; left: 1400px; top: 380px; width: 300px; height: 350px;"></canvas>-->
-
+<canvas id="pie-chart" style="position: absolute; left: 1250px; top: 5px; width: 250px; height: 350px; max-width: 250px;"></canvas>
 <script>
-  var pieData = [
-    {% for item, label, colors in set2 %}
-      {
-        value: {{item}},
-        label: "{{label}}",
-        color : "{{colors}}"
-      },
+    new Chart(document.getElementById("pie-chart"), {
+         type: 'pie',
+          data: {
+            labels: {{label_cui | tojson}},
+            datasets: [{
+              backgroundColor: {{color | tojson}},
+              data: {{value_cui | tojson}}
+            }]
+          },
+          options: {
+            title: {
+              display: false,
+              text: 'Cuisine'
+            },
+            legend: {
+                display: false
+            },
 
-    {% endfor %}
-   ];
-
-// get bar chart canvas
-var mychart = document.getElementById("chart1").getContext("2d");
-steps = 10
-max = {{ max }}
-
-// draw pie chart
-new Chart(document.getElementById("chart1").getContext("2d")).Pie(pieData);
-
+        }
+        });
 </script>
 
-<!--For wongnai chart-->
-<!--<canvas id="chart3" class="chart"></canvas>-->
-<!--<script>-->
-<!--  // bar chart data-->
-<!--  var barData = {-->
-<!--    labels : [-->
-<!--      {% for item in label2 %}-->
-<!--       "{{ item }}",-->
-<!--      {% endfor %}-->
-<!--],-->
 
-<!--    datasets : [{-->
-<!--      fillColor: "rgba(151,187,205,0.2)",-->
-<!--      strokeColor: "rgba(151,187,205,1)",-->
-<!--      pointColor: "rgba(151,187,205,1)",-->
-<!--      data : [-->
-<!--        {% for item in value2 %}-->
-<!--           "{{ item }}",-->
-<!--          {% endfor %}-->
-<!--    ]-->
-<!--      }-->
-<!--    ]-->
-<!--  }-->
+<canvas id="chart2" style="position: absolute; left: 1250px; top: 400px; width: 250px; height: 300px; max-width: 250px;" ></canvas>
+<script>
+var ctx = document.getElementById("chart2").getContext('2d');
+var dataLabels = [0, 1, 2, 3, 4, 5, 6];
+var dataTValues = {{value1}};
+var myChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: dataLabels,
+    datasets: [{
+      label: 'Tripadvisor rating',
+      data: dataTValues,
+      backgroundColor: 'rgba(255, 99, 132, 1)',
+    }]
+  },
+  options: {
+    scales: {
+      xAxes: [{
+        display: false,
+        barPercentage: 1.3,
+        ticks: {
+            max: 5,
+        }
+        fontStyle: "bold",
+     }, {
+        display: true,
+        ticks: {
+            autoSkip: false,
+            max: 6,
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          beginAtZero:true
+        }
+        fontStyle: "bold",
+      }]
+    }
+  }
+});
+</script>
 
-<!-- // get bar chart canvas-->
-<!-- var mychart = document.getElementById("chart3").getContext("2d");-->
+<canvas id="chart3" style="position: absolute; left: 1250px; top: 400px; width: 250px; height: 300px; max-width: 250px;" ></canvas>
+<script>
+var ctx = document.getElementById("chart3").getContext('2d');
+var dataLabels = [0, 1, 2, 3, 4, 5, 6];
+var dataValues = {{value2}};
+var myChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: dataLabels,
+    datasets: [{
+      label: 'Google rating',
+      data: dataValues,
+      backgroundColor: 'rgb(0, 203, 255, 2)',
+    }]
+  },
+  options: {
+    scales: {
+      xAxes: [{
+        display: false,
+        barPercentage: 1.3,
+        ticks: {
+            max: 5,
+        }
+        fontStyle: "bold",
+     }, {
+        display: true,
+        ticks: {
+            autoSkip: false,
+            max: 6,
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          beginAtZero:true
+        }
+        fontStyle: "bold",
+      }]
+    }
+  }
+})
+</script>
 
-<!--   steps = 10-->
-<!--   max = {{max}}-->
-
-<!-- // draw bar chart-->
-<!-- new Chart(mychart).Bar(barData, {-->
-<!--   scaleOverride: true,-->
-<!--   scaleSteps: steps,-->
-<!--   scaleStepWidth: Math.ceil(max / steps),-->
-<!--   scaleStartValue: 0,-->
-<!--   scaleShowVerticalLines: true,-->
-<!--   scaleShowGridLines : true,-->
-<!--   barShowStroke : true,-->
-<!--   scaleShowLabels: true-->
-<!--   }-->
-<!-- );-->
-
-<!--</script>-->
-
-
-<!--For compare chart-->
-<!--<canvas id="chart2" class="chart"></canvas>-->
-<!--<script>-->
-<!--  // bar chart data-->
-<!--  var barData = {-->
-<!--    labels : [-->
-<!--      {% for item in label1 %}-->
-<!--       "{{ item }}",-->
-<!--      {% endfor %}-->
-<!--],-->
-
-<!--    datasets : [{-->
-
-<!--      fillColor: "rgba(151,187,205,0.2)",-->
-<!--      strokeColor: "rgba(151,187,205,1)",-->
-<!--      pointColor: "rgba(151,187,205,1)",-->
-<!--      data : [-->
-<!--        {% for item in value1 %}-->
-<!--           "{{ item }}",-->
-<!--          {% endfor %}-->
-<!--    ]-->
-<!--      },-->
-<!--      {-->
-
-<!--      fillColor: "rgba(0,187,78,0.2)",-->
-<!--      strokeColor: "rgba(151,187,205,1)",-->
-<!--      pointColor: "rgba(98,187,205,1)",-->
-<!--      data : [-->
-<!--        {% for item in value3 %}-->
-<!--           "{{ item }}",-->
-<!--          {% endfor %}-->
-<!--    ]-->
-<!--      }-->
-<!--    ]-->
-<!--  }-->
-
-<!-- // get bar chart canvas-->
-<!-- var mychart = document.getElementById("chart2").getContext("2d");-->
-
-<!--   steps = 10-->
-<!--   max = {{max}}-->
-
-<!-- // draw bar chart-->
-<!-- new Chart(mychart).Bar(barData, {-->
-<!--   scaleOverride: true,-->
-<!--   scaleSteps: steps,-->
-<!--   scaleStepWidth: Math.ceil(max / steps),-->
-<!--   scaleStartValue: 0,-->
-<!--   scaleShowVerticalLines: true,-->
-<!--   scaleShowGridLines : true,-->
-<!--   barShowStroke : true,-->
-<!--   scaleShowLabels: true-->
-<!--   }-->
-<!-- );-->
-
-<!--</script>-->
-
-
-
+<canvas id="chart4" style="position: absolute; left: 1250px; top: 400px; width: 250px; height: 300px; max-width: 250px;" ></canvas>
+<script>
+var ctx = document.getElementById("chart4").getContext('2d');
+var dataLabels = [0, 1, 2, 3, 4, 5, 6];
+var dataTValues = {{value1_compare}};
+var dataGValues = {{value2_compare}};
+var myChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: dataLabels,
+    datasets: [{
+      label: 'Tripadvisor rating',
+      data: dataTValues,
+      backgroundColor: 'rgba(255, 99, 132, 1)',
+    },
+    {
+      label: 'Google rating',
+      data: dataGValues,
+      backgroundColor: 'rgb(0, 203, 255, 2)',
+    }]
+  },
+  options: {
+    scales: {
+      xAxes: [{
+        display: false,
+        barPercentage: 1.3,
+        ticks: {
+            max: 5,
+        },
+     }, {
+        display: true,
+        ticks: {
+            autoSkip: false,
+            max: 6,
+        },
+      }],
+      yAxes: [{
+        ticks: {
+          beginAtZero:true
+        }
+      }]
+    }
+  }
+});
+</script>
 
 <script>
-var times = {}; // Added to initialize an object
+  function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+  }
 
-var timepicker = new TimePicker(['time1', 'time2'], {
-  theme: 'dark',
-  lang: 'en'
-});
-
-timepicker.on('change', function(evt){
-  var value = (evt.hour || '00') + ':' + (evt.minute || '00');
-  evt.element.value = value;
-
-  //Added the below to store in the object and consoling:
-  var id = evt.element.id;
-  times[id] = value;
-  console.clear();
-  console.log(times);
-});
+  function filterFunction() {
+    var input, filter, ul, li, a, i;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    div = document.getElementById("myDropdown");
+    a = div.getElementsByTagName("a");
+    for (i = 0; i < a.length; i++) {
+      txtValue = a[i].textContent || a[i].innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        a[i].style.display = "";
+      } else {
+        a[i].style.display = "none";
+      }
+    }
+  }
 </script>
 
 </body>
 </html>
-
-
-
