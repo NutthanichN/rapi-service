@@ -143,7 +143,7 @@ def index():
         i = 0
 
         # check if user select district
-        if district_h != "bangkok":
+        if district_h != "Bangkok":
             district = db_session.query(District).filter(District.name == district_h).one()
             for r in restaurants:
                 if r.district_id == district.id:
