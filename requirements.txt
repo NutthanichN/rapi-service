@@ -8,3 +8,4 @@ SQLAlchemy
 requests
 beautifulsoup4
 selenium
+connexion
