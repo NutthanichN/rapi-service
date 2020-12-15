@@ -1,0 +1,240 @@
+openapi: 3.0.0
+info:
+  title: Restaurant API Service
+  description:
+    Restaurant API service that provides information about restaurants in Bangkok.
+  version: 1.0.0
+servers:
+- url: /rapi/
+paths:
+  /restaurants:
+    get:
+      summary: Returns an array of restaurant object.
+      operationId: rapi.controller.get_restaurants
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Restaurant'
+  /restaurants/{restaurantId}:
+    parameters:
+    - name: restaurantId
+      in: path
+      required: true
+      schema:
+        type : integer
+    get:
+      summary: Returns complete details of the specified restaurant.
+      operationId: rapi.controller.get_restaurant_details
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+        404:
+          description: No existing restaurant with the specified ID
+  /restaurants/michelin:
+    get:
+      summary: Returns a restaurant which receives Michelin Star.
+      operationId: rapi.controller.get_michelin_restaurants
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Restaurant'
+  /restaurants/rating/google/{restaurantId}:
+    parameters:
+    - name: restaurantId
+      in: path
+      required: true
+      schema:
+        type : integer
+    get:
+      summary: Returns rating of the specified restaurant from Google.
+      operationId: rapi.controller.get_restaurant_google_rating
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: integer
+        404:
+          description: No existing restaurant with the specified ID
+  /restaurants/rating/tripadvisor/{restaurantId}:
+    parameters:
+    - name: restaurantId
+      in: path
+      required: true
+      schema:
+        type : integer
+    get:
+      summary: Returns rating of the specified restaurant from Tripadvisor.
+      operationId: rapi.controller.get_restaurant_tripadvisor_rating
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: integer
+        404:
+          description: No existing restaurant with the specified ID
+  /districts:
+    get:
+      summary: Returns an array of district object.
+      operationId: rapi.controller.get_districts
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/District'
+  /districts/{districtId}:
+    parameters:
+    - name: districtId
+      in: path
+      required: true
+      schema:
+        type : integer
+    get:
+      summary: Returns a district object with the specified ID
+      operationId: rapi.controller.get_district_by_id
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/District'
+        404:
+          description: No existing district with the specified ID
+  /districts/{districtId}/restaurants:
+    parameters:
+    - name: districtId
+      in: path
+      required: true
+      schema:
+        type : integer
+    get:
+      summary: Returns all restaurants with the specified district.
+      operationId: rapi.controller.get_restaurants_by_district
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Restaurant'
+        404:
+          description: No existing restaurants that are located in the specified district.
+  /cuisines:
+    get:
+      summary: Returns an array of cuisine object.
+      operationId: rapi.controller.get_cuisines
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cuisine'
+  /cuisines/{cuisineId}:
+    parameters:
+    - name: cuisineId
+      in: path
+      required: true
+      schema:
+        type : integer
+    get:
+      summary: Returns the specified cuisine.
+      operationId: rapi.controller.get_cuisine_by_id
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cuisine'
+        404:
+          description: No existing cuisine with the specified ID
+  /cuisines/{cuisineId}/restaurants:
+    parameters:
+    - name: cuisineId
+      in: path
+      required: true
+      schema:
+        type : integer
+    get:
+      summary: Returns the array of restaurants with the specified cuisine.
+      operationId: rapi.controller.get_restaurants_by_cuisine
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Restaurant'
+        404:
+          description: No existing restaurants that have cuisine with the specified ID
+components:
+  schemas:
+    Restaurant:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        location:
+          type: array
+          items:
+            type: number
+            multipleOf: 0.000001
+        cuisine_name:
+          type: string
+        opening_hour:
+          type: string
+        google_rating:
+          type: number
+          multipleOf: 0.1
+        tripadvisor_rating:
+          type: number
+          multipleOf: 0.1
+        michelin_star:
+          type: integer
+        address:
+          type: string
+    District:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+    Cuisine:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
