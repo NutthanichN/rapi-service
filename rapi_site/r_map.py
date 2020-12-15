@@ -11,10 +11,14 @@ from folium.plugins import MarkerCluster
 import tkinter as tk
 import random
 import matplotlib.colors as mcolors
+import re
+import operator
+import sqlalchemy
 
 root = tk.Tk()
 
 bp = Blueprint('r_map', __name__)
+OPERATORS = {">": operator.gt, "<": operator.lt, ">=": operator.ge, "<=": operator.le, "==": operator.eq}
 
 
 def generate_map(restaurants: list, locations: list, cuisine_names: dict):
@@ -28,14 +32,14 @@ def generate_map(restaurants: list, locations: list, cuisine_names: dict):
     for point in range(len(restaurants)):
         cuisines = ','.join(set(cuisine_names[restaurants[point].name]))
 
-        l1 = f'''
-            Name: {restaurants[point].name} \
-            Adress: {restaurants[point].address}  \
-            Tripadvisor rating: {restaurants[point].tripadvisor_rating}  \
-            Google rating: {restaurants[point].google_rating}  \
-            Michelin Star: {restaurants[point].michelin_star}  \
-            Cuisines: {cuisines}
-            Open hours: {restaurants[point].open_time} - {restaurants[point].close_time}
+        l1 = f'''<p>
+                    Name: {restaurants[point].name}</br>
+                    Adress: {restaurants[point].address}</br>
+                    Tripadvisor rating: {restaurants[point].tripadvisor_rating}</br>
+                    Google rating: {restaurants[point].google_rating}</br>
+                    Michelin Star: {restaurants[point].michelin_star}</br>
+                    Cuisines: {cuisines}</br>
+                    Open hours: {restaurants[point].open_time} - {restaurants[point].close_time}</p>
         '''
         folium.Marker(locations[point], popup=folium.Popup(l1,
                                                       max_width=400, min_width=300),
@@ -54,6 +58,21 @@ def convert_to_cuisine_name(restaurant_cuisines: dict) -> dict:
             cuisine_names.append(cuisine.name)
         r_cuisine_names[r_name] = cuisine_names
     return r_cuisine_names
+
+def count_michelin_stars(restaurant_lat) -> dict:
+    michelin_stars_count = {0: 0, 1: 0, 2: 0, 3: 0}
+
+    for r in restaurant_lat:
+        if r.michelin_star == 0:
+            michelin_stars_count[0] += 1
+        elif r.michelin_star == 1:
+            michelin_stars_count[1] += 1
+        elif r.michelin_star == 2:
+            michelin_stars_count[2] += 1
+        elif r.michelin_star == 3:
+            michelin_stars_count[3] += 1
+    return michelin_stars_count
+
 
 
 def count_ratings(restaurant_lat, mode) -> dict:
@@ -83,11 +102,19 @@ def count_ratings(restaurant_lat, mode) -> dict:
     return rating_count
 
 
+def split_operator_and_rating(rating_str):
+    result = re.match(r"(?P<operator>>=|<=|>|<)(?P<rating>.*)", rating_str)
+    if result is not None:
+        return result["operator"], result["rating"]
+    return "==", rating_str
+
+
 @bp.route('/', methods=('GET', 'POST'))
 def index():
     check_post = False
     check_t_graph = False
     check_g_graph = False
+    check_m_graph = False
     color_cui = []
     label_cuisines = []
     cuisine_value = []
@@ -104,6 +131,8 @@ def index():
         google_h = request.form.get("google")
         michelin = request.form.get("michelin")
         open_h = request.form.get("open")
+
+
 
         restaurant_result_lst = []
         restaurant_distinct_lst = []
@@ -128,7 +157,6 @@ def index():
                 value_cuisine.add(c[0])
 
             for value in value_cuisine:
-                print(i)
                 i = i + 1
                 cuisine_name = db_session.query(Cuisine.name).join(Restaurant).filter(
                     Restaurant.cuisine_id == value).first()
@@ -151,7 +179,6 @@ def index():
                 value_cuisine.add(c[0])
 
             for value in value_cuisine:
-                print(i)
                 i = i + 1
                 cuisine_name = db_session.query(Cuisine.name).join(Restaurant).filter(
                     Restaurant.cuisine_id == value).first()
@@ -165,38 +192,34 @@ def index():
                 colors_cusine = random.choices(list(mcolors.CSS4_COLORS.values()))
                 color_cui.append(colors_cusine[0])
 
-        # bar chart of tripdavisor and google rating
-        trip_rating_count = count_ratings(restaurant_result_lst, "trip")
-        google_rating_count = count_ratings(restaurant_result_lst, "google")
+        restaurant_check = []
+        restaurant_distinct = []
+        for r in restaurant_result_lst:
+            if r.name not in restaurant_check:
+                restaurant_distinct.append(r)
+                restaurant_check.append(r.name)
 
-        print("trip count: ", trip_rating_count)
-        print("google count: ", google_rating_count)
+        restaurant_check.clear()
+        # bar chart of tripdavisor and google rating and michenlin stars
+        trip_rating_count = count_ratings(restaurant_distinct, "trip")
+        google_rating_count = count_ratings(restaurant_distinct, "google")
+        michelin_stars_count = count_michelin_stars(restaurant_distinct)
+
         trip_rating_count_lst = []
         for key, value in trip_rating_count.items():
             trip_rating_count_lst.append(value)
         google_rating_count_lst = []
         for key, value in google_rating_count.items():
             google_rating_count_lst.append(value)
+        michelin_stars_count_lst = []
+        for key, value in michelin_stars_count.items():
+            michelin_stars_count_lst.append(value)
 
-        # filter cuisine that user input
         if cuisine_h != "":
-            check_cuisine_name = False
             restaurants_filtered_cuisine = []
-            if district_h != "bangkok":
-                query_cuisine = db_session.query(Cuisine.name).join(Restaurant).join(District).filter(
-                    District.id == Restaurant.district_id). \
-                    filter(District.name == district_h).all()
-            else:
-                query_cuisine = db_session.query(Cuisine.name)
-
-            # check that in database have input or not
-            for c in query_cuisine:
-                if c[0] == cuisine_h:
-                    check_cuisine_name = True
-            if check_cuisine_name:
-                r_names_check = []
+            r_names_check = []
+            try:
                 cuisine = db_session.query(Cuisine).filter(Cuisine.name == cuisine_h).one()
-
                 for r in restaurant_result_lst:
                     if r.cuisine_id == cuisine.id:
                         restaurants_filtered_cuisine.append(r)
@@ -204,85 +227,61 @@ def index():
                     elif r.name in r_names_check:
                         restaurants_filtered_cuisine.append(r)
                 restaurant_result_lst = restaurants_filtered_cuisine.copy()
-            else:
-                cuisine_h = "Not matched"
-                pass
-        else:
-            cuisine_h = ""
+            except sqlalchemy.orm.exc.NoResultFound:
+                restaurant_result_lst = []
 
         if trip_ad_h != "":
+            t_operator, t_rating = split_operator_and_rating(trip_ad_h)
             check_t_graph = True
-            check_trip_ad = False
             restaurants_filtered_t_rating = []
+
             for r in restaurant_result_lst:
-                if r.tripadvisor_rating == float(trip_ad_h):
-                    check_trip_ad = True
-            if check_trip_ad:
-                for r in restaurant_result_lst:
-                    if r.tripadvisor_rating == float(trip_ad_h):
-                        restaurants_filtered_t_rating.append(r)
-                restaurant_result_lst = restaurants_filtered_t_rating.copy()
-            else:
-                trip_ad_h = "Not matched"
-                pass
-        else:
-            trip_ad_h = ""
+                try:
+                    t_condition = OPERATORS[t_operator](r.tripadvisor_rating, float(t_rating))
+                    if -1 < r.tripadvisor_rating <= 5:
+                        if t_condition:
+                            restaurants_filtered_t_rating.append(r)
+                except ValueError:
+                    pass
+            restaurant_result_lst = restaurants_filtered_t_rating.copy()
 
         if google_h != "":
+            g_operator, g_rating = split_operator_and_rating(google_h)
             check_g_graph = True
-            check_google = False
             restaurants_filtered_g_rating = []
             for r in restaurant_result_lst:
-                if r.google_rating == float(google_h):
-                    check_google = True
-            if check_google:
-                for r in restaurant_result_lst:
-                    if r.google_rating == float(google_h):
+                try:
+                    g_condition = OPERATORS[g_operator](r.google_rating, float(g_rating))
+                    if g_condition:
                         restaurants_filtered_g_rating.append(r)
-                restaurant_result_lst = restaurants_filtered_g_rating.copy()
-            else:
-                google_h = "Not matched"
-                pass
-        else:
-            google_h = ""
+                except ValueError:
+                    pass
+            restaurant_result_lst = restaurants_filtered_g_rating.copy()
 
         if michelin != "":
-            check_michelin = False
+            m_operator, m_star = split_operator_and_rating(michelin)
+            check_m_graph = True
             restaurants_filtered_michelin = []
             for r in restaurant_result_lst:
-                if r.michelin_star == float(michelin):
-                    check_michelin = True
-            if check_michelin:
-                for r in restaurant_result_lst:
-                    if r.michelin_star == float(michelin):
+                try:
+                    m_condition = OPERATORS[m_operator](r.michelin_star, float(m_star))
+                    if m_condition:
                         restaurants_filtered_michelin.append(r)
-                restaurant_result_lst = restaurants_filtered_michelin.copy()
-            else:
-                michelin = "Not matched"
-                pass
-        else:
-            michelin = ""
+                except ValueError:
+                    pass
+            restaurant_result_lst = restaurants_filtered_michelin.copy()
 
         if open_h != "":
-            check_open = False
+            restaurants_filtered_open_hrs = []
             for r in restaurant_result_lst:
-                if r.open_time == "" and r.close_time == "":
-                    continue
-                elif float(r.open_time) <= float(open_h) < float(r.close_time):
-                    check_open = True
-            if check_open == True:
-                restaurants_filtered_open_hrs = []
-                for r in restaurant_result_lst:
+                try:
                     if r.open_time == "" and r.close_time == "":
                         continue
                     elif float(r.open_time) <= float(open_h) < float(r.close_time):
                         restaurants_filtered_open_hrs.append(r)
-                restaurant_result_lst = restaurants_filtered_open_hrs.copy()
-            else:
-                open_h = "Not matched"
-                pass
-        else:
-            open_h = ""
+                except ValueError:
+                    pass
+            restaurant_result_lst = restaurants_filtered_open_hrs.copy()
 
         restaurant_names_check = []
         restaurant_cuisines = {}
@@ -303,56 +302,79 @@ def index():
         locations = []
         for r in restaurant_distinct_lst:
             locations.append([r.latitude, r.longitude])
-        print(locations)
-
-        for r in restaurant_distinct_lst:
-            print(r)
-        print(len(restaurant_distinct_lst))
-        print()
-
-        print(restaurant_cuisines)
-
-        for value in restaurant_cuisines.values():
-            print(value)
-        print(len(restaurant_result_lst))
-        print(convert_to_cuisine_name(restaurant_cuisines))
 
         restaurant_cuisine_names = convert_to_cuisine_name(restaurant_cuisines)
         generate_map(restaurant_distinct_lst, locations, restaurant_cuisine_names)
+
+
     districts = db_session.query(District.name)
     district_names = [d[0] for d in districts]
 
     if check_post:
         number = len(restaurant_distinct_lst)
-        if check_t_graph and check_g_graph:
-            return render_template('r_map/index.html', dis_all=district_names, max=17000,
-                                   title1='Tripadvisor rating', value1_compare=trip_rating_count_lst,
-                                   title2='Google rating', value2_compare=google_rating_count_lst,
-                                   pre_district=district_h, pre_cuisine=cuisine_h, pre_trip_ad=trip_ad_h,
-                                   pre_google=google_h, pre_michelin=michelin, pre_open=open_h,
-                                   value_cui=cuisine_value, label_cui=label_cuisines, color=color_cui,
-                                   number_restautant=number)
+        if check_m_graph:
+            if check_t_graph and check_g_graph:
+                return render_template('r_map/index.html', dis_select=district_h, dis_all=district_names, max=17000,
+                                       title1='Tripadvisor rating', value1_compare=trip_rating_count_lst,
+                                       value3=michelin_stars_count_lst,
+                                       title2='Google rating', value2_compare=google_rating_count_lst,
+                                       pre_district=district_h, pre_cuisine=cuisine_h, pre_trip_ad=trip_ad_h,
+                                       pre_google=google_h, pre_michelin=michelin, pre_open=open_h,
+                                       value_cui=cuisine_value, label_cui=label_cuisines, color=color_cui,
+                                       number_restautant=number)
+            elif check_t_graph:
+                return render_template('r_map/index.html', dis_select=district_h, dis_all=district_names, max=17000,
+                                       title1='Tripadvisor rating', value1=trip_rating_count_lst,
+                                       value3=michelin_stars_count_lst,
+                                       pre_district=district_h, pre_cuisine=cuisine_h, pre_trip_ad=trip_ad_h,
+                                       pre_google=google_h, pre_michelin=michelin, pre_open=open_h,
+                                       value_cui=cuisine_value, label_cui=label_cuisines, color=color_cui,
+                                       number_restautant=number)
+            elif check_g_graph:
+                return render_template('r_map/index.html', dis_select=district_h, dis_all=district_names, max=17000,
+                                       title2='Google rating', value2=google_rating_count_lst,
+                                       value3=michelin_stars_count_lst,
+                                       pre_district=district_h, pre_cuisine=cuisine_h, pre_trip_ad=trip_ad_h,
+                                       pre_google=google_h, pre_michelin=michelin, pre_open=open_h,
+                                       value_cui=cuisine_value, label_cui=label_cuisines, color=color_cui,
+                                       number_restautant=number)
+            else:
+                return render_template('r_map/index.html', dis_select=district_h, dis_all=district_names, max=17000,
+                                       pre_district=district_h, pre_cuisine=cuisine_h, pre_trip_ad=trip_ad_h,
+                                       pre_google=google_h, pre_michelin=michelin, pre_open=open_h,
+                                       value_cui=cuisine_value, label_cui=label_cuisines, color=color_cui,
+                                       number_restautant=number)
 
-        elif check_t_graph:
-            return render_template('r_map/index.html', dis_all=district_names,  max=17000,
-                                   title1='Tripadvisor rating', value1=trip_rating_count_lst,
-                                   pre_district=district_h, pre_cuisine=cuisine_h, pre_trip_ad=trip_ad_h,
-                                   pre_google=google_h, pre_michelin=michelin, pre_open=open_h,
-                                   value_cui=cuisine_value, label_cui=label_cuisines, color=color_cui,
-                                   number_restautant=number)
-        elif check_g_graph:
-            return render_template('r_map/index.html', dis_all=district_names, max=17000,
-                                   title2='Google rating', value2=google_rating_count_lst,
-                                   pre_district=district_h, pre_cuisine=cuisine_h, pre_trip_ad=trip_ad_h,
-                                   pre_google=google_h, pre_michelin=michelin, pre_open=open_h,
-                                   value_cui=cuisine_value, label_cui=label_cuisines, color=color_cui,
-                                   number_restautant=number)
         else:
-            return render_template('r_map/index.html', dis_all=district_names,max=17000,
-                                   pre_district=district_h, pre_cuisine=cuisine_h, pre_trip_ad=trip_ad_h,
-                                   pre_google=google_h, pre_michelin=michelin, pre_open=open_h,
-                                   value_cui=cuisine_value, label_cui=label_cuisines, color=color_cui,
-                                   number_restautant=number)
+            if check_t_graph and check_g_graph:
+                return render_template('r_map/index.html', dis_select=district_h, dis_all=district_names, max=17000,
+                                       title1='Tripadvisor rating', value1_compare=trip_rating_count_lst,
+                                       title2='Google rating', value2_compare=google_rating_count_lst,
+                                       pre_district=district_h, pre_cuisine=cuisine_h, pre_trip_ad=trip_ad_h,
+                                       pre_google=google_h, pre_michelin=michelin, pre_open=open_h,
+                                       value_cui=cuisine_value, label_cui=label_cuisines, color=color_cui,
+                                       number_restautant=number)
+            elif check_t_graph:
+                return render_template('r_map/index.html', dis_select=district_h, dis_all=district_names, max=17000,
+                                       title1='Tripadvisor rating', value1=trip_rating_count_lst,
+                                       pre_district=district_h, pre_cuisine=cuisine_h, pre_trip_ad=trip_ad_h,
+                                       pre_google=google_h, pre_michelin=michelin, pre_open=open_h,
+                                       value_cui=cuisine_value, label_cui=label_cuisines, color=color_cui,
+                                       number_restautant=number)
+            elif check_g_graph:
+                return render_template('r_map/index.html', dis_select=district_h, dis_all=district_names, max=17000,
+                                       title2='Google rating', value2=google_rating_count_lst,
+                                       pre_district=district_h, pre_cuisine=cuisine_h, pre_trip_ad=trip_ad_h,
+                                       pre_google=google_h, pre_michelin=michelin, pre_open=open_h,
+                                       value_cui=cuisine_value, label_cui=label_cuisines, color=color_cui,
+                                       number_restautant=number)
+
+            else:
+                return render_template('r_map/index.html', dis_select=district_h, dis_all=district_names, max=17000,
+                                       pre_district=district_h, pre_cuisine=cuisine_h, pre_trip_ad=trip_ad_h,
+                                       pre_google=google_h, pre_michelin=michelin, pre_open=open_h,
+                                       value_cui=cuisine_value, label_cui=label_cuisines, color=color_cui,
+                                       number_restautant=number)
     else:
         return render_template('r_map/index.html', dis_all=district_names, max=17000,
                                pre_district="", pre_cuisine="", pre_trip_ad="", pre_google="",
