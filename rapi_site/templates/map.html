@@ -23,7 +23,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_f8135e415fd2463995a5a37f57a2a62d {
+                #map_86d92e289fd8460ea0ae3a4b46e404d1 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -38,13 +38,13 @@
 </head>
 <body>    
     
-            <div class="folium-map" id="map_f8135e415fd2463995a5a37f57a2a62d" ></div>
+            <div class="folium-map" id="map_86d92e289fd8460ea0ae3a4b46e404d1" ></div>
         
 </body>
 <script>    
     
-            var map_f8135e415fd2463995a5a37f57a2a62d = L.map(
-                "map_f8135e415fd2463995a5a37f57a2a62d",
+            var map_86d92e289fd8460ea0ae3a4b46e404d1 = L.map(
+                "map_86d92e289fd8460ea0ae3a4b46e404d1",
                 {
                     center: [13.7500014, 100.5428021],
                     crs: L.CRS.EPSG3857,
@@ -58,38 +58,88 @@
 
         
     
-            var tile_layer_462c8238ff1d46e3a4a3103a2fd9d89d = L.tileLayer(
+            var tile_layer_caeeda5781f1426aa02e587bdc6125c6 = L.tileLayer(
                 "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
-            ).addTo(map_f8135e415fd2463995a5a37f57a2a62d);
+            ).addTo(map_86d92e289fd8460ea0ae3a4b46e404d1);
         
     
-            var marker_cluster_7f284e661f1a456281af2b84e63ec522 = L.markerClusterGroup(
+            var marker_cluster_9dd65f3fcb164f5ca234f4fce135e1ab = L.markerClusterGroup(
                 {}
             );
-            map_f8135e415fd2463995a5a37f57a2a62d.addLayer(marker_cluster_7f284e661f1a456281af2b84e63ec522);
+            map_86d92e289fd8460ea0ae3a4b46e404d1.addLayer(marker_cluster_9dd65f3fcb164f5ca234f4fce135e1ab);
         
     
-            var marker_2b6dd8b27fed402fb36ad5ea529a7e5f = L.marker(
+            var marker_c5cd1796a6f44a3b9d65e08ef4dbb6f0 = L.marker(
                 [13.7500014, 100.5428021],
                 {}
-            ).addTo(marker_cluster_7f284e661f1a456281af2b84e63ec522);
+            ).addTo(marker_cluster_9dd65f3fcb164f5ca234f4fce135e1ab);
         
     
-            var icon_2117b7630242476e966f0057bb14164a = L.AwesomeMarkers.icon(
+            var icon_f82e4465169540049bf3928fde3289c5 = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
             );
-            marker_2b6dd8b27fed402fb36ad5ea529a7e5f.setIcon(icon_2117b7630242476e966f0057bb14164a);
+            marker_c5cd1796a6f44a3b9d65e08ef4dbb6f0.setIcon(icon_f82e4465169540049bf3928fde3289c5);
         
     
-        var popup_9916d475521c4d58a935a9c3d8b88cdc = L.popup({"maxWidth": 400, "minWidth": 300});
+        var popup_eec0d4d9d54a4d86b71d044db07a5b51 = L.popup({"maxWidth": 400, "minWidth": 300});
 
         
-            var html_6646b8672e254b73bd7c57e909737d58 = $(`<div id="html_6646b8672e254b73bd7c57e909737d58" style="width: 100.0%; height: 100.0%;">             Name: The Berkeley Dining Room             Adress: 559 Ratprarop Rd The Berkeley Hotel Pratunam, Makkasan, Rachatewi, Bangkok 10400 Thailand              Tripadvisor rating: 5.0              Google rating: 4.3              Michelin Star: 0              Cuisines: International,Thai             Open hours: 06.00 - 22.00         </div>`)[0];
-            popup_9916d475521c4d58a935a9c3d8b88cdc.setContent(html_6646b8672e254b73bd7c57e909737d58);
+            var html_a9476499fd5c4d9a86d0d5939cd78f9d = $(`<div id="html_a9476499fd5c4d9a86d0d5939cd78f9d" style="width: 100.0%; height: 100.0%;"><p>                     Name: The Berkeley Dining Room</br>                     Adress: 559 Ratprarop Rd The Berkeley Hotel Pratunam, Makkasan, Rachatewi, Bangkok 10400 Thailand</br>                     Tripadvisor rating: 5.0</br>                     Google rating: 4.3</br>                     Michelin Star: 0</br>                     Cuisines: Thai,International</br>                     Open hours: 06.00 - 22.00</p>         </div>`)[0];
+            popup_eec0d4d9d54a4d86b71d044db07a5b51.setContent(html_a9476499fd5c4d9a86d0d5939cd78f9d);
         
 
-        marker_2b6dd8b27fed402fb36ad5ea529a7e5f.bindPopup(popup_9916d475521c4d58a935a9c3d8b88cdc)
+        marker_c5cd1796a6f44a3b9d65e08ef4dbb6f0.bindPopup(popup_eec0d4d9d54a4d86b71d044db07a5b51)
+        ;
+
+        
+    
+    
+            var marker_58d3eead84f84041a7fe627eaac2c935 = L.marker(
+                [13.7404393, 100.5516479],
+                {}
+            ).addTo(marker_cluster_9dd65f3fcb164f5ca234f4fce135e1ab);
+        
+    
+            var icon_9ce490279f7d482ea87ded511faed224 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_58d3eead84f84041a7fe627eaac2c935.setIcon(icon_9ce490279f7d482ea87ded511faed224);
+        
+    
+        var popup_b41ef59c67774b1aa508b531109bd949 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_95a289977fe24199aeae8673b1729c73 = $(`<div id="html_95a289977fe24199aeae8673b1729c73" style="width: 100.0%; height: 100.0%;"><p>                     Name: OPEN Restaurant</br>                     Adress: 12 Sukhumvit Soi 2 DoubleTree By Hilton Bangkok Ploenchit, Bangkok 10110 Thailand</br>                     Tripadvisor rating: 5.0</br>                     Google rating: 4.3</br>                     Michelin Star: 0</br>                     Cuisines: Thai,Dining bars</br>                     Open hours: 06.30 - 22.00</p>         </div>`)[0];
+            popup_b41ef59c67774b1aa508b531109bd949.setContent(html_95a289977fe24199aeae8673b1729c73);
+        
+
+        marker_58d3eead84f84041a7fe627eaac2c935.bindPopup(popup_b41ef59c67774b1aa508b531109bd949)
+        ;
+
+        
+    
+    
+            var marker_ea70dba964024c6f983174a9c5ee8f8c = L.marker(
+                [13.7289631, 100.5134199],
+                {}
+            ).addTo(marker_cluster_9dd65f3fcb164f5ca234f4fce135e1ab);
+        
+    
+            var icon_b79b3214c170430fa66f109e2aea5939 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_ea70dba964024c6f983174a9c5ee8f8c.setIcon(icon_b79b3214c170430fa66f109e2aea5939);
+        
+    
+        var popup_d5e1060845414d7ebce35c1957d40dd4 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_110e426e1d9a4a578e2dd03a4742aa4f = $(`<div id="html_110e426e1d9a4a578e2dd03a4742aa4f" style="width: 100.0%; height: 100.0%;"><p>                     Name: Thara Thong</br>                     Adress: 2 Charoen Krung Road Soi 30 Royal Orchid Sheraton Hotel, Bangkok 10500 Thailand</br>                     Tripadvisor rating: 5.0</br>                     Google rating: 4.3</br>                     Michelin Star: 0</br>                     Cuisines: Thai,Healthy</br>                     Open hours: 18.00 - 22.00</p>         </div>`)[0];
+            popup_d5e1060845414d7ebce35c1957d40dd4.setContent(html_110e426e1d9a4a578e2dd03a4742aa4f);
+        
+
+        marker_ea70dba964024c6f983174a9c5ee8f8c.bindPopup(popup_d5e1060845414d7ebce35c1957d40dd4)
         ;
 
         
