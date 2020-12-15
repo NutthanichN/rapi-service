@@ -1,14 +1,9 @@
 <html>
 <head>
-<!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
-<!--  <meta name="viewport" content="width=device-width, initial-scale=1">-->
-<!--<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>-->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.js"></script>
 <link href="https://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.css" rel="stylesheet"/>
 <link href='https://fonts.googleapis.com/css?family=Nunito' rel='stylesheet'>
-<!--<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">-->
 </head>
 
 <style>
@@ -30,8 +25,6 @@
 #myInput {
   box-sizing: border-box;
   background-image: url('searchicon.png');
-<!--  background-position: 14px 12px;-->
-<!--  background-repeat: no-repeat;-->
   font-size: 16px;
   padding: 14px 20px 12px 45px;
   border: none;
@@ -53,8 +46,6 @@
   background-color: #f6f6f6;
   width: 180px;
   overflow: auto;
-<!--  border: 1px solid #ddd;-->
-<!--  z-index: 1;-->
 }
 
 .dropdown-district{
@@ -85,27 +76,12 @@ input[type=button], input[type=submit], input[type=reset] {
   display: block;
 }
 
-<!--.chart {-->
-<!--  position: relative;-->
-<!--  text-align:left;-->
-<!--  background-color: #ddddbb;-->
-<!--  padding: 30px;-->
-<!--  line-height: 30pt;-->
-<!--  opacity:0.9;-->
-<!--  width: 200px;-->
-<!--  height: 500px;-->
-
-<!--}-->
 .box-filter {
   text-align:left;
   background-color:  #e6f9ff;
   opacity:0.9;
 }
 
-.box-detail {
-  text-align:left;
-  background-color:  #e6e6ff;
-}
 
 </style>
 <body>
@@ -116,7 +92,8 @@ input[type=button], input[type=submit], input[type=reset] {
 <form  action="{{ url_for('index') }}" method="post">
   <div class="dropdown" style="position: absolute; top: 8px; left: 50px">
         <select id="district" class="dropdown-district" name="district-name">
-          <option value="bangkok" name="bangkok" selected>Bangkok</option>
+          <option value="{{dis_select}}" name="{{dis_select}}"selected>Select: {{dis_select}}</option>
+          <option value="bangkok" name="bangkok">Bangkok</option>
           {% for dis in dis_all %}
             <option value="{{dis}}" name="{{dis}}">{{dis}}</option>
           {% endfor %}
@@ -125,30 +102,21 @@ input[type=button], input[type=submit], input[type=reset] {
   <div  class="box-filter" style="position: absolute; left: 13px; top: 80px;">
     <label for="cuisine">Cuisine:</label>
     <input type="text" id="cuisine" name="cuisine" value="{{pre_cuisine}}"><br><br>
-    <label for="trip-ad">Tripdavisor rating (0-5):</label>
+    <label for="trip-ad">Tripdavisor rating (0-5 or >=3 or >3 or <3):</label>
     <input type="text" id="trip-ad" name="trip-ad" value="{{pre_trip_ad}}"><br><br>
-    <label for="google">Google rating (0-5):</label>
+    <label for="google">Google rating (0-5 or >=3 or >3 or <3):</label>
     <input type="text" id="google" name="google" value="{{pre_google}}"><br><br>
-    <label for="michelin">Michelin star (0-5):</label>
+    <label for="michelin">Michelin star (0-3 or >=3 or >3 or <3):</label>
     <input type="text" id="michelin" name="michelin" value="{{pre_michelin}}"><br><br>
-    <label for="open">Open time (example 06.00):</label>
+    <label for="open">Open time (06.00):</label>
     <input type="text" id="open" name="open" value={{pre_open}}><br><br>
+    <p>Number of matched restaurants: {{number_restautant}}</p>
     <input type="submit" value="Submit">
   </div>
 </form>
-
-<div class = "box-detail" style="position: absolute; left: 13px; top: 350px;">
-  <p style="font-weight: bold; font-size: 150%">{{pre_district}}</p>
-  <p>Cusine: {{pre_cuisine}}</p>
-  <p>Trip advisor rating: {{pre_trip_ad}}</p>
-  <p>Google rating: {{pre_google}}</p>
-  <p>Michelin star: {{pre_michelin}}</p>
-  <p>Open time: {{pre_open}}</p>
-  <p>Number of restaurants: {{number_restautant}}</p>
-</div>
-
-
-<canvas id="pie-chart" style="position: absolute; left: 1250px; top: 5px; width: 250px; height: 350px; max-width: 250px;"></canvas>
+{% if label_cui  and value_cui  and color  %}
+  <canvas id="pie-chart" style="position: absolute; left: 13px; top: 400px; width: 250px; height: 350px; max-width: 250px; background-color:  #f9f2ec"></canvas>
+{% endif%}
 <script>
     new Chart(document.getElementById("pie-chart"), {
          type: 'pie',
@@ -172,8 +140,9 @@ input[type=button], input[type=submit], input[type=reset] {
         });
 </script>
 
-
-<canvas id="chart2" style="position: absolute; left: 1250px; top: 400px; width: 250px; height: 300px; max-width: 250px;" ></canvas>
+{% if value1 %}
+  <canvas id="chart2" style="position: absolute; left: 1250px; top: 400px; width: 250px; height: 300px; max-width: 250px; background-color:  #f9f2ec" ></canvas>
+{% endif %}
 <script>
 var ctx = document.getElementById("chart2").getContext('2d');
 var dataLabels = [0, 1, 2, 3, 4, 5, 6];
@@ -213,7 +182,9 @@ var myChart = new Chart(ctx, {
 });
 </script>
 
-<canvas id="chart3" style="position: absolute; left: 1250px; top: 400px; width: 250px; height: 300px; max-width: 250px;" ></canvas>
+{% if value2 %}
+  <canvas id="chart3" style="position: absolute; left: 1250px; top: 400px; width: 250px; height: 300px; max-width: 250px; background-color:  #f9f2ec" ></canvas>
+{% endif %}
 <script>
 var ctx = document.getElementById("chart3").getContext('2d');
 var dataLabels = [0, 1, 2, 3, 4, 5, 6];
@@ -253,7 +224,10 @@ var myChart = new Chart(ctx, {
 })
 </script>
 
-<canvas id="chart4" style="position: absolute; left: 1250px; top: 400px; width: 250px; height: 300px; max-width: 250px;" ></canvas>
+
+{% if value1_compare and value2_compare  %}
+  <canvas id="chart4" style="position: absolute; left: 1250px; top: 400px; width: 250px; height: 300px; max-width: 250px; background-color:  #f9f2ec" ></canvas>
+{% endif%}
 <script>
 var ctx = document.getElementById("chart4").getContext('2d');
 var dataLabels = [0, 1, 2, 3, 4, 5, 6];
@@ -294,6 +268,39 @@ var myChart = new Chart(ctx, {
           beginAtZero:true
         }
       }]
+    }
+  }
+});
+</script>
+
+{% if value3 %}
+  <canvas id="chart5" style="position: absolute; left: 1250px; top: 30px; width: 250px; height: 300px; max-width: 250px; background-color:  #f9f2ec" ></canvas>
+{% endif %}
+<script>
+var ctx = document.getElementById("chart5").getContext('2d');
+var dataLabels = [0, 1, 2, 3];
+var dataTValues = {{value3}};
+var myChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: dataLabels,
+    datasets: [{
+      label: 'Michelin stars',
+      data: dataTValues,
+      backgroundColor: 'rgba(0,0,255,0.3)',
+      barPercentage: 0.5,
+      barThickness: 6,
+      maxBarThickness: 8,
+      minBarLength: 2,
+    }]
+  },
+  options: {
+    scales: {
+        xAxes: [{
+            gridLines: {
+                offsetGridLines: true
+            }
+        }]
     }
   }
 });
