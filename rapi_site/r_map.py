@@ -341,6 +341,7 @@ def index():
             else:
                 return render_template('r_map/index.html', dis_select=district_h, dis_all=district_names, max=17000,
                                        pre_district=district_h, pre_cuisine=cuisine_h, pre_trip_ad=trip_ad_h,
+                                       value3=michelin_stars_count_lst,
                                        pre_google=google_h, pre_michelin=michelin, pre_open=open_h,
                                        value_cui=cuisine_value, label_cui=label_cuisines, color=color_cui,
                                        number_restautant=number)
