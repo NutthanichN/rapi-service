@@ -111,6 +111,7 @@ def split_operator_and_rating(rating_str):
 
 @bp.route('/', methods=('GET', 'POST'))
 def index():
+    check_select = False
     check_post = False
     check_t_graph = False
     check_g_graph = False
@@ -132,8 +133,6 @@ def index():
         michelin = request.form.get("michelin")
         open_h = request.form.get("open")
 
-
-
         restaurant_result_lst = []
         restaurant_distinct_lst = []
         restaurants = db_session.query(Restaurant).all()
@@ -142,170 +141,173 @@ def index():
 
         i = 0
 
-        # check if user select district
-        if district_h != "Bangkok":
-            district = db_session.query(District).filter(District.name == district_h).one()
-            for r in restaurants:
-                if r.district_id == district.id:
-                    restaurant_result_lst.append(r)
+        try:
 
-            # cuisine pie chart
-            cuisine_id = db_session.query(Restaurant.cuisine_id).join(District).join(Cuisine).filter(
-                District.id == Restaurant.district_id). \
-                filter(District.name == district_h).all()
-            for c in cuisine_id:
-                value_cuisine.add(c[0])
+            # check if user select district
+            if district_h != "Bangkok":
+                district = db_session.query(District).filter(District.name == district_h).one()
+                for r in restaurants:
+                    if r.district_id == district.id:
+                        restaurant_result_lst.append(r)
 
-            for value in value_cuisine:
-                i = i + 1
-                cuisine_name = db_session.query(Cuisine.name).join(Restaurant).filter(
-                    Restaurant.cuisine_id == value).first()
-                cuisine_count = db_session.query(Restaurant.latitude).join(District).filter(
+                # cuisine pie chart
+                cuisine_id = db_session.query(Restaurant.cuisine_id).join(District).join(Cuisine).filter(
                     District.id == Restaurant.district_id). \
-                    filter(Restaurant.latitude == Restaurant.latitude). \
-                    filter(Restaurant.cuisine_id == value). \
-                    filter(District.name == district_h).count()
-                cuisine_value.append(int(cuisine_count))
-                label_cuisines.append(cuisine_name[0])
-                colors_cusine = random.choices(list(mcolors.CSS4_COLORS.values()))
-                color_cui.append(colors_cusine[0])
+                    filter(District.name == district_h).all()
+                for c in cuisine_id:
+                    value_cuisine.add(c[0])
 
-        else:
-            restaurant_result_lst = list(restaurants)
+                for value in value_cuisine:
+                    i = i + 1
+                    cuisine_name = db_session.query(Cuisine.name).join(Restaurant).filter(
+                        Restaurant.cuisine_id == value).first()
+                    cuisine_count = db_session.query(Restaurant.latitude).join(District).filter(
+                        District.id == Restaurant.district_id). \
+                        filter(Restaurant.latitude == Restaurant.latitude). \
+                        filter(Restaurant.cuisine_id == value). \
+                        filter(District.name == district_h).count()
+                    cuisine_value.append(int(cuisine_count))
+                    label_cuisines.append(cuisine_name[0])
+                    colors_cusine = random.choices(list(mcolors.CSS4_COLORS.values()))
+                    color_cui.append(colors_cusine[0])
 
-            # cuisine pie chart
-            cuisine_id = db_session.query(Restaurant.cuisine_id)
-            for c in cuisine_id:
-                value_cuisine.add(c[0])
-
-            for value in value_cuisine:
-                i = i + 1
-                cuisine_name = db_session.query(Cuisine.name).join(Restaurant).filter(
-                    Restaurant.cuisine_id == value).first()
-                cuisine_count = db_session.query(Restaurant.latitude).filter(
-                    District.id == Restaurant.district_id). \
-                    filter(Restaurant.latitude == Restaurant.latitude). \
-                    filter(Restaurant.cuisine_id == value).count()
-
-                cuisine_value.append(int(cuisine_count))
-                label_cuisines.append(cuisine_name[0])
-                colors_cusine = random.choices(list(mcolors.CSS4_COLORS.values()))
-                color_cui.append(colors_cusine[0])
-
-        restaurant_check = []
-        restaurant_distinct = []
-        for r in restaurant_result_lst:
-            if r.name not in restaurant_check:
-                restaurant_distinct.append(r)
-                restaurant_check.append(r.name)
-
-        restaurant_check.clear()
-        # bar chart of tripdavisor and google rating and michenlin stars
-        trip_rating_count = count_ratings(restaurant_distinct, "trip")
-        google_rating_count = count_ratings(restaurant_distinct, "google")
-        michelin_stars_count = count_michelin_stars(restaurant_distinct)
-
-        trip_rating_count_lst = []
-        for key, value in trip_rating_count.items():
-            trip_rating_count_lst.append(value)
-        google_rating_count_lst = []
-        for key, value in google_rating_count.items():
-            google_rating_count_lst.append(value)
-        michelin_stars_count_lst = []
-        for key, value in michelin_stars_count.items():
-            michelin_stars_count_lst.append(value)
-
-        if cuisine_h != "":
-            restaurants_filtered_cuisine = []
-            r_names_check = []
-            try:
-                cuisine = db_session.query(Cuisine).filter(Cuisine.name == cuisine_h).one()
-                for r in restaurant_result_lst:
-                    if r.cuisine_id == cuisine.id:
-                        restaurants_filtered_cuisine.append(r)
-                        r_names_check.append(r.name)
-                    elif r.name in r_names_check:
-                        restaurants_filtered_cuisine.append(r)
-                restaurant_result_lst = restaurants_filtered_cuisine.copy()
-            except sqlalchemy.orm.exc.NoResultFound:
-                restaurant_result_lst = []
-
-        if trip_ad_h != "":
-            t_operator, t_rating = split_operator_and_rating(trip_ad_h)
-            check_t_graph = True
-            restaurants_filtered_t_rating = []
-
-            for r in restaurant_result_lst:
-                try:
-                    t_condition = OPERATORS[t_operator](r.tripadvisor_rating, float(t_rating))
-                    if -1 < r.tripadvisor_rating <= 5:
-                        if t_condition:
-                            restaurants_filtered_t_rating.append(r)
-                except ValueError:
-                    pass
-            restaurant_result_lst = restaurants_filtered_t_rating.copy()
-
-        if google_h != "":
-            g_operator, g_rating = split_operator_and_rating(google_h)
-            check_g_graph = True
-            restaurants_filtered_g_rating = []
-            for r in restaurant_result_lst:
-                try:
-                    g_condition = OPERATORS[g_operator](r.google_rating, float(g_rating))
-                    if g_condition:
-                        restaurants_filtered_g_rating.append(r)
-                except ValueError:
-                    pass
-            restaurant_result_lst = restaurants_filtered_g_rating.copy()
-
-        if michelin != "":
-            m_operator, m_star = split_operator_and_rating(michelin)
-            check_m_graph = True
-            restaurants_filtered_michelin = []
-            for r in restaurant_result_lst:
-                try:
-                    m_condition = OPERATORS[m_operator](r.michelin_star, float(m_star))
-                    if m_condition:
-                        restaurants_filtered_michelin.append(r)
-                except ValueError:
-                    pass
-            restaurant_result_lst = restaurants_filtered_michelin.copy()
-
-        if open_h != "":
-            restaurants_filtered_open_hrs = []
-            for r in restaurant_result_lst:
-                try:
-                    if r.open_time == "" and r.close_time == "":
-                        continue
-                    elif float(r.open_time) <= float(open_h) < float(r.close_time):
-                        restaurants_filtered_open_hrs.append(r)
-                except ValueError:
-                    pass
-            restaurant_result_lst = restaurants_filtered_open_hrs.copy()
-
-        restaurant_names_check = []
-        restaurant_cuisines = {}
-        for r in restaurant_result_lst:
-            # restaurant = {'': []}
-            if r.name not in restaurant_names_check:
-                restaurant_distinct_lst.append(r)
-                restaurant_names_check.append(r.name)
-                # restaurant_cuisines[str(r.address)] = [r.cuisine_id]
-                restaurant_cuisines[r.name] = [r.cuisine_id]
             else:
-                for r_name in restaurant_names_check:
-                    if r_name == r.name:
-                        # restaurant_cuisines[str(r.address)].append(r.cuisine_id)
-                        restaurant_cuisines[r.name].append(r.cuisine_id)
-        restaurant_names_check.clear()
+                restaurant_result_lst = list(restaurants)
 
-        locations = []
-        for r in restaurant_distinct_lst:
-            locations.append([r.latitude, r.longitude])
+                # cuisine pie chart
+                cuisine_id = db_session.query(Restaurant.cuisine_id)
+                for c in cuisine_id:
+                    value_cuisine.add(c[0])
 
-        restaurant_cuisine_names = convert_to_cuisine_name(restaurant_cuisines)
-        generate_map(restaurant_distinct_lst, locations, restaurant_cuisine_names)
+                for value in value_cuisine:
+                    i = i + 1
+                    cuisine_name = db_session.query(Cuisine.name).join(Restaurant).filter(
+                        Restaurant.cuisine_id == value).first()
+                    cuisine_count = db_session.query(Restaurant.latitude).filter(
+                        District.id == Restaurant.district_id). \
+                        filter(Restaurant.latitude == Restaurant.latitude). \
+                        filter(Restaurant.cuisine_id == value).count()
 
+                    cuisine_value.append(int(cuisine_count))
+                    label_cuisines.append(cuisine_name[0])
+                    colors_cusine = random.choices(list(mcolors.CSS4_COLORS.values()))
+                    color_cui.append(colors_cusine[0])
+
+            restaurant_check = []
+            restaurant_distinct = []
+            for r in restaurant_result_lst:
+                if r.name not in restaurant_check:
+                    restaurant_distinct.append(r)
+                    restaurant_check.append(r.name)
+
+            restaurant_check.clear()
+            # bar chart of tripdavisor and google rating and michenlin stars
+            trip_rating_count = count_ratings(restaurant_distinct, "trip")
+            google_rating_count = count_ratings(restaurant_distinct, "google")
+            michelin_stars_count = count_michelin_stars(restaurant_distinct)
+
+            trip_rating_count_lst = []
+            for key, value in trip_rating_count.items():
+                trip_rating_count_lst.append(value)
+            google_rating_count_lst = []
+            for key, value in google_rating_count.items():
+                google_rating_count_lst.append(value)
+            michelin_stars_count_lst = []
+            for key, value in michelin_stars_count.items():
+                michelin_stars_count_lst.append(value)
+
+            if cuisine_h != "":
+                restaurants_filtered_cuisine = []
+                r_names_check = []
+                try:
+                    cuisine = db_session.query(Cuisine).filter(Cuisine.name == cuisine_h).one()
+                    for r in restaurant_result_lst:
+                        if r.cuisine_id == cuisine.id:
+                            restaurants_filtered_cuisine.append(r)
+                            r_names_check.append(r.name)
+                        elif r.name in r_names_check:
+                            restaurants_filtered_cuisine.append(r)
+                    restaurant_result_lst = restaurants_filtered_cuisine.copy()
+                except sqlalchemy.orm.exc.NoResultFound:
+                    restaurant_result_lst = []
+
+            if trip_ad_h != "":
+                t_operator, t_rating = split_operator_and_rating(trip_ad_h)
+                check_t_graph = True
+                restaurants_filtered_t_rating = []
+
+                for r in restaurant_result_lst:
+                    try:
+                        t_condition = OPERATORS[t_operator](r.tripadvisor_rating, float(t_rating))
+                        if -1 < r.tripadvisor_rating <= 5:
+                            if t_condition:
+                                restaurants_filtered_t_rating.append(r)
+                    except ValueError:
+                        pass
+                restaurant_result_lst = restaurants_filtered_t_rating.copy()
+
+            if google_h != "":
+                g_operator, g_rating = split_operator_and_rating(google_h)
+                check_g_graph = True
+                restaurants_filtered_g_rating = []
+                for r in restaurant_result_lst:
+                    try:
+                        g_condition = OPERATORS[g_operator](r.google_rating, float(g_rating))
+                        if g_condition:
+                            restaurants_filtered_g_rating.append(r)
+                    except ValueError:
+                        pass
+                restaurant_result_lst = restaurants_filtered_g_rating.copy()
+
+            if michelin != "":
+                m_operator, m_star = split_operator_and_rating(michelin)
+                check_m_graph = True
+                restaurants_filtered_michelin = []
+                for r in restaurant_result_lst:
+                    try:
+                        m_condition = OPERATORS[m_operator](r.michelin_star, float(m_star))
+                        if m_condition:
+                            restaurants_filtered_michelin.append(r)
+                    except ValueError:
+                        pass
+                restaurant_result_lst = restaurants_filtered_michelin.copy()
+
+            if open_h != "":
+                restaurants_filtered_open_hrs = []
+                for r in restaurant_result_lst:
+                    try:
+                        if r.open_time == "" and r.close_time == "":
+                            continue
+                        elif float(r.open_time) <= float(open_h) < float(r.close_time):
+                            restaurants_filtered_open_hrs.append(r)
+                    except ValueError:
+                        pass
+                restaurant_result_lst = restaurants_filtered_open_hrs.copy()
+
+            restaurant_names_check = []
+            restaurant_cuisines = {}
+            for r in restaurant_result_lst:
+                # restaurant = {'': []}
+                if r.name not in restaurant_names_check:
+                    restaurant_distinct_lst.append(r)
+                    restaurant_names_check.append(r.name)
+                    # restaurant_cuisines[str(r.address)] = [r.cuisine_id]
+                    restaurant_cuisines[r.name] = [r.cuisine_id]
+                else:
+                    for r_name in restaurant_names_check:
+                        if r_name == r.name:
+                            # restaurant_cuisines[str(r.address)].append(r.cuisine_id)
+                            restaurant_cuisines[r.name].append(r.cuisine_id)
+            restaurant_names_check.clear()
+
+            locations = []
+            for r in restaurant_distinct_lst:
+                locations.append([r.latitude, r.longitude])
+
+            restaurant_cuisine_names = convert_to_cuisine_name(restaurant_cuisines)
+            generate_map(restaurant_distinct_lst, locations, restaurant_cuisine_names)
+        except sqlalchemy.orm.exc.NoResultFound:
+            generate_map([], [], {})
 
     districts = db_session.query(District.name)
     district_names = [d[0] for d in districts]
