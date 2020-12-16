@@ -1,6 +1,9 @@
 # rapi-service
 Restaurant API service (DAQ 2020 project)
 
+This Restaurant API service provides information about restaurants in Bangkok.
+This information includes basic information of restaurants and their received ratings from Michelin Guide, Google and tripadvisor.com.
+
 ## Team members
 | Student Id | Name | GitHub account |
 |------------|------|----------------|
