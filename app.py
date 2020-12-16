@@ -16,6 +16,7 @@ application = DispatcherMiddleware(
 )
 
 if __name__ == '__main__':
+    rapi_site.debug = True
     run_simple(
         hostname='localhost',
         port=5000,
