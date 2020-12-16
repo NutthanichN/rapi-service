@@ -103,11 +103,11 @@ input[type=button], input[type=submit], input[type=reset] {
     <label for="cuisine">Cuisine:</label>
     <input type="text" id="cuisine" name="cuisine" value="{{pre_cuisine}}"><br><br>
     <label for="trip-ad">Tripdavisor rating (0-5 or >=3 or >3 or <3):</label>
-    <input type="text" id="trip-ad" name="trip-ad" value="{{pre_trip_ad}}"><br><br>
+    <input type="text" id="trip-ad" name="trip-ad" maxlength="5" size="5" value="{{pre_trip_ad}}"><br><br>
     <label for="google">Google rating (0-5 or >=3 or >3 or <3):</label>
-    <input type="text" id="google" name="google" value="{{pre_google}}"><br><br>
+    <input type="text" id="google" name="google" maxlength="5" size="5" value="{{pre_google}}"><br><br>
     <label for="michelin">Michelin star (0-3 or >=3 or >3 or <3):</label>
-    <input type="text" id="michelin" name="michelin" value="{{pre_michelin}}"><br><br>
+    <input type="text" id="michelin" name="michelin" maxlength="5" size="5" value="{{pre_michelin}}"><br><br>
     <label for="open">Open time (06.00):</label>
     <input type="text" id="open" name="open" value={{pre_open}}><br><br>
     <p>Number of matched restaurants: {{number_restautant}}</p>
@@ -129,7 +129,7 @@ input[type=button], input[type=submit], input[type=reset] {
           },
           options: {
             title: {
-              display: false,
+              display: true,
               text: 'Cuisine'
             },
             legend: {
