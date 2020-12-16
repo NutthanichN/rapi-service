@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<head>    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://rawcdn.githack.com/python-visualization/folium/master/folium/templates/leaflet.awesome.rotate.css"/>
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_896811808dd24cc4934004a104335ff0 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css"/>
+</head>
+<body>    
+    
+            <div class="folium-map" id="map_896811808dd24cc4934004a104335ff0" ></div>
+        
+</body>
+<script>    
+    
+            var map_896811808dd24cc4934004a104335ff0 = L.map(
+                "map_896811808dd24cc4934004a104335ff0",
+                {
+                    center: [13.7500014, 100.5428021],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 20,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_52c9e0f6630f4cfa88875f21aa0b0d13 = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_896811808dd24cc4934004a104335ff0);
+        
+    
+            var marker_cluster_9bc8960ddeed40ea85fb38ded1309420 = L.markerClusterGroup(
+                {}
+            );
+            map_896811808dd24cc4934004a104335ff0.addLayer(marker_cluster_9bc8960ddeed40ea85fb38ded1309420);
+        
+    
+            var marker_1e1436e7a7da47a3b685f639e8dfb93e = L.marker(
+                [13.7500014, 100.5428021],
+                {}
+            ).addTo(marker_cluster_9bc8960ddeed40ea85fb38ded1309420);
+        
+    
+            var icon_27b7dd2799f843e687e95e5ecc89217d = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_1e1436e7a7da47a3b685f639e8dfb93e.setIcon(icon_27b7dd2799f843e687e95e5ecc89217d);
+        
+    
+        var popup_33442f1294ea462c832b2841ff182f19 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_0b83a8d7351743adb5b3b8277d2e0f54 = $(`<div id="html_0b83a8d7351743adb5b3b8277d2e0f54" style="width: 100.0%; height: 100.0%;"><p>                     Name: The Berkeley Dining Room</br>                     Adress: 559 Ratprarop Rd The Berkeley Hotel Pratunam, Makkasan, Rachatewi, Bangkok 10400 Thailand</br>                     Tripadvisor rating: 5.0</br>                     Google rating: 4.3</br>                     Michelin Star: 0</br>                     Cuisines: Thai,International</br>                     Open hours: 06.00 - 22.00</p>         </div>`)[0];
+            popup_33442f1294ea462c832b2841ff182f19.setContent(html_0b83a8d7351743adb5b3b8277d2e0f54);
+        
+
+        marker_1e1436e7a7da47a3b685f639e8dfb93e.bindPopup(popup_33442f1294ea462c832b2841ff182f19)
+        ;
+
+        
+    
+    
+            var marker_3606db214c384a6a93a338af4e665476 = L.marker(
+                [13.7502314, 100.5428865],
+                {}
+            ).addTo(marker_cluster_9bc8960ddeed40ea85fb38ded1309420);
+        
+    
+            var icon_2dfc97e16cf1453ebe08b1b8fadca7cd = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_3606db214c384a6a93a338af4e665476.setIcon(icon_2dfc97e16cf1453ebe08b1b8fadca7cd);
+        
+    
+        var popup_34d5e99c2c9d4c11974a94d15300fae4 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_2bc9aeb3802b4911834b09e520dd0a71 = $(`<div id="html_2bc9aeb3802b4911834b09e520dd0a71" style="width: 100.0%; height: 100.0%;"><p>                     Name: The Mulberry Chinese Cuisine</br>                     Adress: 559 Ratprarop Rd Makkasan, Rachatewi, The Berkeley Hotel Pratunam, Bangkok 10400 Thailand</br>                     Tripadvisor rating: 5.0</br>                     Google rating: 4.0</br>                     Michelin Star: 0</br>                     Cuisines: Asian,Chinese</br>                     Open hours: 11.30 - 22.00</p>         </div>`)[0];
+            popup_34d5e99c2c9d4c11974a94d15300fae4.setContent(html_2bc9aeb3802b4911834b09e520dd0a71);
+        
+
+        marker_3606db214c384a6a93a338af4e665476.bindPopup(popup_34d5e99c2c9d4c11974a94d15300fae4)
+        ;
+
+        
+    
+    
+            var marker_494f7f1e18a94b609f6414adf1588392 = L.marker(
+                [13.7546124, 100.5418907],
+                {}
+            ).addTo(marker_cluster_9bc8960ddeed40ea85fb38ded1309420);
+        
+    
+            var icon_f2df52d4b8a740ec88859063567f5ee7 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "darkblue", "prefix": "fa"}
+            );
+            marker_494f7f1e18a94b609f6414adf1588392.setIcon(icon_f2df52d4b8a740ec88859063567f5ee7);
+        
+    
+        var popup_3573ae6a6ca741f0b22b451f62ae3b53 = L.popup({"maxWidth": 400, "minWidth": 300});
+
+        
+            var html_368b987244f94874831370c00601d249 = $(`<div id="html_368b987244f94874831370c00601d249" style="width: 100.0%; height: 100.0%;"><p>                     Name: Kalyana Restaurant</br>                     Adress: 110 Ratchaprarop Rd Phaya Thai Khwaeng Thanon Phaya Thai, Khet Ratchathewi, Bangkok 10400 Thailand</br>                     Tripadvisor rating: 5.0</br>                     Google rating: 4.8</br>                     Michelin Star: 0</br>                     Cuisines: Asian,Burmese</br>                     Open hours: 09.00 - 23.00</p>         </div>`)[0];
+            popup_3573ae6a6ca741f0b22b451f62ae3b53.setContent(html_368b987244f94874831370c00601d249);
+        
+
+        marker_494f7f1e18a94b609f6414adf1588392.bindPopup(popup_3573ae6a6ca741f0b22b451f62ae3b53)
+        ;
+
+        
+    
+</script>
